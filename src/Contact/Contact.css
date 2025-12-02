@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .mainTop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+  }
+  
+  .mainDiv {
+    width: 53vw;
+    height: 73vh;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    position: relative;
+    border-radius: 0.2rem;
+    display: flex;
+   
+ 
+  }
+  
+  .subDiv {
+    width: 20vw;
+    height: 50vh;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px,
+      rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+    background-color: #135078;
+    color: white;
+    position: absolute;
+    z-index: 2;
+    left: -20%; /* Adjust as needed */
+    top: 10%; /* Adjust as needed */
+    border-radius: 0.2rem;
+    padding: 2rem;
+  }
+  
+  
+  .heading5 {
+    color: black;
+    margin-bottom: 2rem;
+  }
+  .heading6 {
+    color: black;
+    margin-bottom: 2rem;
+  }
+  
+  .info {
+    display: flex;
+    margin-top: 1rem;
+    color: white;
+  }
+  
+  .iconDiv {
+    flex-basis: 20%;
+  }
+  
+  .detDiv {
+    flex-basis: 80%;
+    font-size: 1.8vh;
+  }
+  
+  .social {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-top: 1rem;
+  }
+  
+  .iconD:hover {
+    transform: scale(1.2); /* Adjust the scale factor as needed */
+    transition: transform 0.3s ease; /* Add a smooth transition effect */
+  }
+  
+  .left {
+    flex-basis: 30%;
+  }
+  
+  .right {
+    flex-basis: 70%;
+    padding: 2rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .form-control textarea {
+    height: 80px; /* Adjust the height as needed */
+    resize: none; /* Prevent textarea from being resized by user */
+  }
+  
+  .btnSubmit {
+    /* background-color: #135078; */
+    background-color:#135078;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+  }
+  #Feedback {
+    height: 100px; /* Adjust the height as needed */
+    resize: none; /* Prevent textarea from being resized by user */
+    padding-left: 1.3rem;
+  }
+  
+  #Feedback::placeholder {
+    font-size: 13px; /* Adjust the font size as needed */
+  }
+  
+  
+  
+  @media screen and (max-width: 768px) {
+    .mainDiv {
+      flex-direction: column;
+      align-items: center;
+      width: 80vw;
+    height: 70vh;
+    }
+  
+    .subDiv {
+      width: 70vw;
+      left: 1%;
+      top: 1%;
+      transform: none;
+      position: relative;
+    }
+  }

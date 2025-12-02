@@ -1,0 +1,93 @@
+.semicircle {
+   border-radius: 25px;/* Adjust the radius for semicircle corners */
+  }
+  
+  .search-icon-button {
+    padding: 6px 12px;
+     /* Adjust the padding for button size */
+    border: none;
+    background-color: #007bff; /* Change to your desired button color */
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  /* Optional: Add hover effect */
+  .search-icon-button:hover {
+    background-color: #0056b3; /* Change to your desired hover color */
+  }
+  input::placeholder {
+    font-size: 0.8rem; /* Adjust the font size as needed */
+    padding: 2vh;
+  }
+  .category-input {
+   
+    border: none;
+    background: none;
+    /* width: 100%; */
+    text-align: left;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+
+.category-input::placeholder{
+  font-size: 1rem;
+}
+
+.card-container {
+  padding: 15px;
+  margin: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff; /* Background color of the card */
+  transition: transform 0.3s; /* Add a smooth transition effect on hover */
+}
+
+.card-container:hover {
+  transform: scale(1.05); /* Add a slight scale effect on hover for attractiveness */
+}
+
+.card-container .card-text {
+  font-size: 0.8rem;
+  padding: 0;
+  margin: 0;
+}
+.card-container .card-title{
+  padding: 0;
+  margin-bottom: 2vh;
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    padding: 10px;
+    height: auto;
+  }
+}
+
+/* Adjustments for better responsiveness */
+.row-cols-md-3 > div {
+  flex: 0 0 33.3333%; /* Set column width for medium-sized screens */
+}
+
+.row-cols-xs-4 > div {
+  flex: 0 0 25%; /* Set column width for extra small screens */
+}
+
+.card-container .card-body {
+  padding: 0; /* Remove default padding from card body */
+}
+
+.card-container .card-title {
+  margin: 0; /* Remove default margin from card title */
+}
+
+.card-container .card-text {
+  margin: 0; /* Remove default margin from card text */
+}
+
+.card-container img {
+  width: 100%; /* Make sure the image occupies the entire width of the card */
+  height: auto; /* Maintain aspect ratio for the image */
+}
+
+

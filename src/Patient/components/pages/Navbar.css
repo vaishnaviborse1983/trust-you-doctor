@@ -1,0 +1,26 @@
+/* 🔹 Dark chocolaty numbers (desktop + mobile) */
+.topbar-link,
+.small-numbers a {
+  font-weight: bold;
+  color: #5D4037;
+  text-decoration: none;
+}
+
+.topbar-link:hover,
+.small-numbers a:hover {
+  color: #3E2723; /* even darker chocolate on hover */
+  text-decoration: none; /* no underline */
+}
+
+/* 🔹 Logo resizing */
+@media (max-width: 576px) {
+  .topbar-logo {
+    width: 130px !important; /* smaller logo on mobile */
+  }
+}
+
+/* 🔹 Mobile numbers style */
+.small-numbers a {
+  font-size: 13px;
+  line-height: 1.3;
+}

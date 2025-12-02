@@ -1,0 +1,103 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #f8f7f3;
+  margin: 0;
+  padding: 0;
+}
+
+.career-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 25px;
+  text-align: center;
+}
+
+/* Title */
+.career-title {
+  font-size: 2.2rem;
+  color: #004080;
+  margin-bottom: 30px;
+}
+
+/* Career Cards */
+.career-card {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(0, 64, 128, 0.1);
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.career-card:hover {
+  transform: translateY(-5px);
+}
+
+.career-card h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #003366;
+}
+
+.career-card p {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* Career Image */
+.career-img img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 25px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .career-container {
+    padding: 15px;
+  }
+
+  .career-title {
+    font-size: 1.8rem;
+  }
+
+  .career-card h2 {
+    font-size: 1.2rem;
+  }
+
+  .career-card p {
+    font-size: 0.95rem;
+  }
+
+  .career-img img {
+    max-height: 250px;
+  }
+
+ 
+}
+
+@media (max-width: 480px) {
+  .career-title {
+    font-size: 1.5rem;
+  }
+
+  .career-card h2 {
+    font-size: 1.1rem;
+  }
+
+  .career-card p {
+    font-size: 0.9rem;
+  }
+
+  .career-img img {
+    max-height: 200px;
+  }
+
+
+}

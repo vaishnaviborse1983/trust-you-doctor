@@ -1,0 +1,77 @@
+/* About.css */
+
+.About {
+  text-align: left;
+}
+
+.title {
+  color: #000080;
+}
+
+.main-head{
+  height: 10rem;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('https://www.physiciansweekly.com/wp-content/uploads/2018/04/a388e7f1-istock-894125638.jpg');
+  background-size: cover;
+  background-position: center;
+
+}
+
+.App-header {
+  background-color: #2a79be;
+  padding: 20px;
+  font-size: calc(10px + 2vmin);
+  /* position: relative; */
+  color: #fff;
+  /* background-image: url('https://www.physiciansweekly.com/wp-content/uploads/2018/04/a388e7f1-istock-894125638.jpg'); */
+  background-size: cover;
+  background-position: center;
+  height: 150px; /* Change this value to your desired height */
+}
+/* 
+.App-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+} */
+
+.bold-text {
+  font-weight: bold;
+}
+
+.container {
+  margin-top: 20px; /* Adjust margin as needed */
+}
+
+.content {
+  margin: 20px 0; /* Adjust margin as needed */
+}
+
+/* Media Queries for Responsive Design */
+
+@media (max-width: 768px) {
+  .App-header {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .content {
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 20px;
+  }
+}

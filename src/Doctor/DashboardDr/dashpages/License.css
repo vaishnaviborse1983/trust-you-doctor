@@ -1,0 +1,31 @@
+@media (min-width: 768px) {
+    
+    /* Add any other desktop-specific styles here */
+  }
+  
+  /* Media query for mobile */
+  @media (max-width: 767px) {
+    .show > div {
+      width: 80%; /* Full width on mobile */
+    }
+    .MainDiv{
+      flex-direction: column;
+      
+      width: 100%;
+ 
+    }
+
+    .Sub{
+      flex-direction: column;
+      
+      width: 100%;
+      
+    }
+
+    .smallDiv{
+      width: 100%;
+      flex-direction: column;
+    }
+  
+    /* Add any other mobile-specific styles here */
+  }

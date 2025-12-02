@@ -1,0 +1,191 @@
+.dentist-career-container {
+  font-family: "Poppins", sans-serif;
+  color: #004466;
+  background: #fafafa; /* soft off-white */
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+/* Hero Section */
+.dentist-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fdfdfd, #f5faff);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+  text-align: center;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dentist-hero:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.hero-text {
+  max-width: 800px;
+  margin-bottom: 2rem;
+}
+.hero-text h1 {
+  font-size: 2.5rem;
+  color: #004466;
+  margin-bottom: 1rem;
+}
+.hero-text p {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #333;
+}
+.hero-img {
+  width: 70%;
+  max-width: 600px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  margin-top: 1.5rem;
+  transition: transform 0.3s ease-in-out;
+}
+.hero-img:hover {
+  transform: scale(1.02);
+}
+
+/* Info Section */
+.info-alternating {
+  margin: 3rem 0;
+  display: grid;
+  gap: 2rem;
+}
+.info-block {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.info-block:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+.info-block h2 {
+  color: #006080;
+  margin-bottom: 1rem;
+}
+.info-block p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #2d2d2d;
+}
+.info-img {
+  width: 60%;
+  max-width: 500px;
+  border-radius: 12px;
+  margin: 1.5rem auto;
+  display: block;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+.info-img:hover {
+  transform: scale(1.05);
+}
+
+/* Process / Key Steps Section */
+.process-section {
+  text-align: center;
+  margin: 3rem 0;
+}
+.process-section h2 {
+  color: #004466;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.8rem;
+}
+.step-card {
+  background: linear-gradient(145deg, #ffffff, #f5faff);
+  padding: 1.7rem;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.step-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.15);
+}
+.step-card h3 {
+  color: #006080;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+.step-card p {
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* Inquiry Form */
+.inquiry-section {
+  margin-top: 3rem;
+  background: #f5f9fa;
+  padding: 2.5rem;
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  color: #004466;
+  transition: box-shadow 0.3s ease;
+}
+.inquiry-section:hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+.inquiry-form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+.inquiry-form .form-group {
+  margin-bottom: 1.2rem;
+}
+.inquiry-form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+.inquiry-form input,
+.inquiry-form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+.inquiry-form input:focus,
+.inquiry-form textarea:focus {
+  border-color: #004466;
+  box-shadow: 0 0 6px rgba(0, 68, 102, 0.4);
+  outline: none;
+}
+.send-btn {
+  background: #004466;
+  color: white;
+  padding: 0.9rem 1.7rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.2s;
+}
+.send-btn:hover {
+  background: #00334d;
+  transform: translateY(-3px);
+}
+.contact-number {
+  margin-top: 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+}

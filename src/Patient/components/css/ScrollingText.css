@@ -1,0 +1,27 @@
+/* ScrollingText.css */
+
+.scrolling-text-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    background-color: var(--d_blue);
+  }
+  
+  .scrolling-text {
+    font-size: 16px;
+    color: white;
+    display: inline-block;
+    padding-right: 100%; /* Add a large padding to push the text out of the container */
+    animation: scrollText 15s linear infinite; /* Adjust animation duration as needed */
+  }
+  
+  @keyframes scrollText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  

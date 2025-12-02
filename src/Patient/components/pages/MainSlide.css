@@ -1,0 +1,152 @@
+.wider-video-carousel {
+  max-width: 800px;
+  min-width: 620px;
+  width: 90vw;
+  padding: 1.5rem;
+  margin: 2rem auto;
+  background: #f8fdff;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(60,110,180,0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Each video slide */
+.video-slide {
+  width: 250px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-slide iframe,
+.video-slide video {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* ==== MainSlide.css ==== */
+
+.main-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+}
+
+.main-text h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 5px 10px;
+  background: #fff;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  flex: 1;
+  padding: 5px;
+}
+
+.search-bar .icon {
+  margin-right: 8px;
+  color: gray;
+}
+
+/* === RESPONSIVE FIXES === */
+@media (max-width: 767px) {
+  .body {
+    height: auto !important;
+    padding: 2vh 0;
+  }
+
+  .main-body {
+    margin-top: 2vh;
+    text-align: center;
+  }
+
+  .main-text {
+    padding: 0 15px;
+  }
+
+  .main-text h1 {
+    font-size: 1.4rem;
+    margin-top: 2vh !important;
+  }
+
+  .main-text p {
+    font-size: 0.9rem;
+    margin: 2vh 0;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    padding: 8px 12px;
+    gap: 10px;
+  }
+
+  .search-bar input {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary {
+    font-size: 0.9rem;
+    padding: 8px 14px;
+    width: 100%;
+  }
+
+  .row .col-6 img {
+    height: 20vh !important;
+  }
+
+  /* Hide Swiper on mobile */
+  .swiper_container,
+  .small-swiper {
+    display: none !important;
+  }
+
+  .search-bar .icon {
+    margin-bottom: 5px;
+  }
+}
+
+/* Make An Appointment button smaller on desktop */
+.appointment-btn {
+  width: 60%; /* smaller width */
+  font-size: 1rem;
+  padding: 8px 16px;
+  transition: 0.3s ease;
+}
+
+.appointment-btn:hover {
+  transform: scale(1.05);
+}
+
+/* On tablets, a bit wider */
+@media (max-width: 991px) {
+  .appointment-btn {
+    width: 70%;
+  }
+}
+
+/* On mobile, full width */
+@media (max-width: 767px) {
+  .appointment-btn {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}

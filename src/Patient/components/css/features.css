@@ -1,0 +1,101 @@
+/* ==== EXISTING STYLES (unchanged) ==== */
+.fea {
+    font-family: 'Oswald', sans-serif;
+}
+.fea h1, p, GrLinkNext {
+    color: var(--d_blue);
+    font-weight: 700;
+}
+.card-style {
+    position: relative;
+    z-index: 1;
+    margin-top: 0;
+    border: none;
+    padding-top: 0;
+    border-radius: 25px;
+    box-shadow: 2px 2px 5px 5px rgba(0,0,0, 0.3);
+}
+.card-style::before {
+    border: none;
+    content: "";
+    width: 10px;
+    height: 100%;
+    background-color: #135078;
+    position: absolute;
+    margin: 0;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    transition: 0.6s all;
+}
+.card-style:hover::before {
+    width: 100%;
+}
+.card-style:hover .card-title,
+.card-style:hover .card-text {
+    color: var(--d_blue);
+}
+#card-img {
+    display: block; 
+    margin-right: auto;
+    margin-left: 20px;
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    height: 3rem;
+    width: 3rem;
+}
+.card-style:hover #card-img {
+    background-color: var(--d_blue);
+}
+.card-style:hover #card-text {
+    color: var(--d_blue);
+}
+.fea p:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.4rem;
+}
+#card-text {
+    color: rgb(50, 142, 196);
+}
+#card-text:hover {
+    color: var(--d_blue);
+}
+
+/* ==== MOBILE-FRIENDLY FIXES ==== */
+@media (max-width: 767px) {
+    .row.d-flex.justify-content-center > .col-lg-3,
+    .row.d-flex.justify-content-center > .col-md-6,
+    .row.d-flex.justify-content-center > .col-sm-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .card-style {
+        min-height: 16rem; /* slightly smaller for mobile */
+    }
+
+    .card-style::before {
+        width: 100%; /* full width on mobile by default */
+    }
+
+    .card-title {
+        font-size: 1.3rem !important;
+    }
+
+    #card-text {
+        font-size: 0.95rem !important;
+    }
+
+    .fea h1 {
+        font-size: 1.6rem !important;
+    }
+
+    /* Optional: center text in cards for mobile */
+    .card-body {
+        text-align: center;
+    }
+}

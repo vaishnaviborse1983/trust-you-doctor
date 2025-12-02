@@ -1,0 +1,116 @@
+/* Common base styling for all nurse career pages */
+.nurse-career {
+  font-family: Arial, sans-serif;
+  background-color: #fafafa;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 900px;
+  margin: 20px auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Top Image Styling for Nurse Careers */
+.nurse-career-img {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem auto 2rem auto;
+}
+
+.nurse-career-img img {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.nurse-career-img img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Header Section */
+.career-header h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.career-header p {
+  text-align: center;
+  color: #555;
+  font-weight: 400;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Career Details Section */
+.career-details {
+  margin: 2rem 0;
+}
+
+.career-details h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #135078;
+}
+
+.career-details ul {
+  list-style: square inside;
+  padding-left: 15px;
+  line-height: 1.4;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  .nurse-career {
+    padding: 1.5rem;
+  }
+
+  .career-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .career-header p {
+    font-size: 0.95rem;
+  }
+
+  .career-details h2 {
+    font-size: 1.3rem;
+  }
+
+  .career-details ul {
+    font-size: 0.95rem;
+  }
+
+  .nurse-career-img img {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .nurse-career {
+    padding: 1rem;
+  }
+
+  .career-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .career-header p {
+    font-size: 0.9rem;
+  }
+
+  .career-details h2 {
+    font-size: 1.2rem;
+  }
+
+  .career-details ul {
+    font-size: 0.9rem;
+  }
+}

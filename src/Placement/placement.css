@@ -1,0 +1,59 @@
+/* placement.css */
+
+body {
+    font-family: 'YourPreferredFont', sans-serif;
+    overflow-x: hidden;
+  }
+  
+  .placement-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px; /* Set a minimum height for cards */
+    margin-bottom: 20px; /* Add margin between cards */
+  }
+  
+  .placement-card h4 {
+    margin-bottom: 10px;
+    font-size: 2rem; /* Adjust font size for heading */
+  }
+  
+  .placement-card pre {
+    flex-grow: 1;
+    overflow: auto; /* Add overflow property for text */
+    white-space: pre-wrap;
+    font-size: 1.8vh; /* Adjust font size for details */
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 767px) {
+    .placement-card {
+      min-height: unset; /* Remove min-height on smaller screens */
+    }
+  
+    .placement-card h4 {
+      font-size: 1.8rem; /* Adjust font size for heading on smaller screens */
+    }
+  
+    .placement-card pre {
+      font-size: 1.6vh; /* Adjust font size for details on smaller screens */
+    }
+  }
+  /* For small screens (w-sm-100) */
+@media (max-width: 576px) {
+  .custom-width {
+    width: 100%;
+  }
+}
+
+/* For medium and larger screens (w-md-50) */
+@media (min-width: 768px) {
+  .custom-width {
+    width: 50%;
+  }
+}

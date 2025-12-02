@@ -1,0 +1,62 @@
+  .Test-category {
+    cursor: pointer;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    transition: background-color 0.3s;
+    color: black;
+    padding: 15px;
+    margin-right: '2vh';
+    
+  }
+  
+  .Test-category:hover {
+    background-color: #BCBCBC;
+  }
+  
+  .Test-category.Test-active {
+    /* background-color: #BCBCBC; */
+    background-color: #EEEEEE;
+    color: #BB2124;
+    /* border-radius: 5px; */
+    stroke: none;
+  }
+  .DoctorNavbar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+
+  }
+  .DoctorNavbarmain{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0;
+    margin-left: 0;
+    background-color: white;
+   
+  }
+  .Test-content {
+    /* margin-top: 20px;
+    padding: 20px; */
+    text-align: center;
+    padding-top: 0;
+    background-color: white;
+    border: none;
+    /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; */
+    /* border-radius: 10px; */
+    padding: '4vh';
+    padding-bottom: 4vh;
+   margin-top: 0;
+  }
+  @media (max-width: 767px) {
+    /* Media query for screens smaller than 768px (typical mobile phones) */
+    .p-img {
+        height: 100px; /* Set the height to 20% of the viewport height */
+    }
+
+}
+.main-profile{
+  overflow-x: hidden;
+}

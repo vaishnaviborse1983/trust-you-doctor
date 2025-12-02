@@ -1,0 +1,29 @@
+.regbody{
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+.react-tel-input label {
+    display: none;
+  }
+  .transition-container {
+    color: #781313; /* Initial text color */
+    /* animation: colorChange 3s infinite alternate;  */
+    /* Animation with a duration of 5 seconds, running infinitely in an alternate direction */
+  }
+  
+  /* @keyframes colorChange {
+    0% {
+        color: purple;
+    }
+   
+    50%{
+       
+        color: red;
+    }
+    100% {
+      color: blue; 
+    }
+  } */
+  

@@ -1,0 +1,109 @@
+/* Style for the scrolling container */
+.scroll-container {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+/* Style for the left scroll button */
+.scroll-button.left {
+    background-color: #fff;
+    /* Button background color */
+    border: 1px solid #ccc;
+    /* Button border */
+    border-radius: 50%;
+    /* Make it circular */
+    color: #333;
+    /* Button text color */
+    font-size: 1.5rem;
+    /* Button text size */
+    padding: 0.5rem 0.7rem;
+    /* Button padding */
+    margin-right: 1rem;
+    /* Add some spacing between button and cards */
+    cursor: pointer;
+    /* Change cursor on hover */
+}
+
+/* Style for the right scroll button */
+.scroll-button.right {
+    background-color: #fff;
+    /* Button background color */
+    border: 1px solid #ccc;
+    /* Button border */
+    border-radius: 50%;
+    /* Make it circular */
+    color: #333;
+    /* Button text color */
+    font-size: 1.5rem;
+    /* Button text size */
+    padding: 0.5rem 0.7rem;
+    /* Button padding */
+    margin-left: 1rem;
+    /* Add some spacing between button and cards */
+    cursor: pointer;
+    /* Change cursor on hover */
+}
+
+/* Style for the category cards */
+.category-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    /* Prevent cards from wrapping to the next row */
+}
+
+/* Add some spacing between cards */
+.category-list li {
+    margin-right: 1rem;
+}
+
+/* Optional: Add a box shadow to the cards on hover */
+.category-list li:hover .card-cat {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+
+/* categories.css */
+
+.controls {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    cursor: pointer;
+}
+
+.control-icon {
+    font-size: 24px;
+}
+
+.icon {
+    margin: 0;
+    height: 2rem;
+    width: 2rem;
+}
+
+/* Add this to your CSS file */
+.scroll-container {
+    overflow-x: hidden;
+    /* Hide horizontal scrollbar */
+}
+
+/* Optionally, you can hide the vertical scrollbar as well */
+.scroll-container::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+Card {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-family: 'Oswald', sans-serif;
+}
+
+.text-cat{
+
+}

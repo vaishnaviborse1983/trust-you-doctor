@@ -1,0 +1,206 @@
+.navbar-brand span {
+
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--d_blue);
+}
+
+.navbar-nav .nav-link {
+  margin-right: 10px;
+    text-decoration: none;
+    color: var(--d_blue);
+    font-size: 2.3vh;
+    font-weight: 900;
+    
+    position: relative;
+}
+.navbar-nav{
+  margin-right: 0;
+  padding-right: 0;
+}
+.navbar-nav .nav-link::after {
+    transition: width 0.3s ease;
+    position: absolute;
+    width: 0;
+    bottom: 0;
+    left: 0;
+    color: #781313;
+    content: "";
+    height: 3px;
+    /* Adjust the height as needed */
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 100%;
+    /* Expand the underline to 100% width */
+    color: #781313;
+    background-color: var(--d_blue);
+}
+
+.navbar-nav .nav-link.active {
+    color: #781313;
+    text-decoration: underline;
+    text-decoration-color: #781313;
+    text-underline-offset: 0.6rem;
+   
+}
+
+.search-box {
+    position: absolute;
+    right: 70px;
+    height: 45px;
+    max-width: 65%;
+    width: 100%;
+    top: 17%;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s linear;
+}
+
+.nav.openSearch .search-box {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.search-box .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    color: white;
+
+    transform: translateY(-50%);
+}
+
+.search-box input {
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    background-color: #fff;
+    padding: 0 15px 0 45px;
+}
+
+@media only screen and (max-width: 600px) {
+    #searchIcon {
+        display: none;
+    }
+
+}
+
+.alert-text {
+    width: 100%;
+    height: 1.8rem;
+    background-color: #781313;
+}
+
+
+::placeholder {
+    color: white;
+    opacity: 1;
+    /* Firefox */
+    font-size: larger;
+}
+
+.marquee-container {
+    overflow: hidden;
+  }
+  
+  .marquee-text {
+    white-space: nowrap;
+    animation: marquee-scroll 30s linear infinite;
+    color: white;
+  }
+  
+  @keyframes marquee-scroll {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  /* Media query for mobile responsiveness */
+  @media (max-width: 768px) {
+    .marquee-text {
+      font-size: 14px; /* Adjust font size for smaller screens */
+    }
+  }
+
+
+  /* Add the following styles to your existing Navbar.css file */
+
+/* Responsive styles for smaller screens */
+@media only screen and (max-width: 768px) {
+    .navbar {
+      padding: 0.5rem;
+    }
+  
+    .navbar-brand img {
+      width: 150px; /* Adjust the logo size for smaller screens */
+    }
+  
+    .navbar-toggler {
+      margin-right: 0.5rem;
+    }
+  
+    .navbar-nav {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .navbar-nav .nav-link {
+      margin: 5px 0;
+    }
+  
+    .navbar-collapse {
+      margin-top: 1rem;
+    }
+  
+    .row {
+      margin-right: 0;
+    }
+  
+    .row h5 {
+      font-size: 14px;
+    }
+  
+    .search-box {
+      right: 15px;
+    }
+  }
+  
+  /* Additional styles for better mobile experience */
+  body {
+    overflow-x: hidden; 
+  }
+  
+  .custom-dropdown {
+    display: inline-block;
+  }
+  .Navbar_login{
+    color: red;
+    font-weight: bolder;
+    font-size: 2.4vh;
+    text-decoration: none;
+
+  }
+  .Navbar_login:hover{
+    color: #781313;
+  }
+
+  
+  .user-icon {
+    margin-right: -20px; 
+    height: 3vh;
+    width: 4vw;
+    color: black;
+  }
+  .navbaruser{
+    margin-left: -10px;
+    font-size: 2.4vh;
+    color: black;
+  }
+  
+  
