@@ -1,30 +1,78 @@
+/* MAIN CENTER CONTAINER (centered + wider) */
+.qualification-box {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  margin-left: auto;   /* center horizontally */
+  margin-right: auto;
+
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+
+  width: 55vw;         /* a bit wider */
+  min-width: 420px;
+  max-width: 750px;
+
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+/* TITLE */
+.qualification-box h5 {
+  color: #0073cf;
+  font-weight: 600;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+/* LARGE TEXT AREA */
+.text-area-custom {
+  width: 100%;
+  height: 280px !important;
+  padding: 18px;
+  border-radius: 12px;
+  border: 2px solid #0073cf;
+  resize: none;
+  outline: none;
+  font-size: 17px;
+  background: #f8fbff;
+  transition: 0.25s;
+}
+
+/* FOCUS EFFECT */
+.text-area-custom:focus {
+  background: #ffffff;
+  border-color: #005bb8;
+  box-shadow: 0 0 12px rgba(0, 115, 207, 0.4);
+}
+
+/* BIG SAVE BUTTON */
+.save-btn {
+  margin-top: 18px;
+  width: 100%;
+  background-color: #0073cf !important;
+  border-radius: 10px !important;
+  padding: 12px 0 !important;
+  font-size: 18px !important;
+  letter-spacing: 0.5px;
+}
+
+/* DESKTOP */
 @media (min-width: 768px) {
-    
-    /* Add any other desktop-specific styles here */
+  .qualification-box {
+    width: 60vw; /* a little wider on desktop */
   }
-  
-  /* Media query for mobile */
-  @media (max-width: 767px) {
-    .show > div {
-      width: 80%; /* Full width on mobile */
-    }
-    .MainDiv{
-      flex-direction: column;
-      /* margin-left: 15vw; */
-      width: 80%;
- 
-    }
+}
 
-    .Sub{
-      flex-direction: column;
-      
-      width: 80%;
-      
-    }
-
-    .smallDiv{
-      width: 30%;
-    }
-  
-    /* Add any other mobile-specific styles here */
+/* MOBILE */
+@media (max-width: 767px) {
+  .qualification-box {
+    width: 90vw;
   }
+
+  .text-area-custom {
+    height: 200px !important;
+  }
+}
+

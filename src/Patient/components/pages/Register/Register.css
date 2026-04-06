@@ -1,0 +1,146 @@
+Role Selection Page
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.register-content {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+}
+
+.register-title {
+  font-size: 3rem;
+  color: #E74C3C;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.register-description {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  max-width: 900px;
+  margin: 0 auto 60px;
+  line-height: 1.6;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.role-cards-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.role-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 30px;
+  width: 250px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 3px solid transparent;
+}
+
+.role-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  border-color: #3498db;
+}
+
+.role-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.role-card h3 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+  margin: 0;
+}
+
+.already-registered {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.already-registered p {
+  margin: 0;
+  font-size: 1rem;
+  color: #2c3e50;
+}
+
+.login-link {
+  color: #3498db;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-link:hover {
+  color: #2980b9;
+}
+
+/* Form Container */
+.form-container {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding: 40px 20px;
+}
+
+.back-button {
+  display: block;
+  margin: 0 auto 20px;
+  font-size: 1rem;
+  color: #3498db;
+  text-decoration: none;
+}
+
+.back-button:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .register-title {
+    font-size: 2rem;
+  }
+
+  .register-description {
+    font-size: 1rem;
+    padding: 15px;
+  }
+
+  .role-cards-wrapper {
+    gap: 20px;
+  }
+
+  .role-card {
+    width: 200px;
+    padding: 30px 20px;
+  }
+
+  .role-icon {
+    font-size: 60px;
+  }
+
+  .role-card h3 {
+    font-size: 1.3rem;
+  }
+}

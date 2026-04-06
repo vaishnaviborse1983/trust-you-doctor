@@ -1,287 +1,457 @@
-// import React from 'react'
-// import Button from 'react-bootstrap/Button';
-// import Form from 'react-bootstrap/Form';
-// import { withRouter } from 'react-router-dom';
-// import { getAuth, signInWithMobileAndPassword } from 'firebase/auth';
-// import { useState } from 'react';
-// import { getDatabase, ref, query, equalTo, get, orderByChild } from 'firebase/database';
-// import { useHistory } from 'react-router-dom';
 
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 
-// function DrLogin({ history }) {
 
-//     const database = getDatabase();
-//     const auth = getAuth();
+// import React, { useState } from "react";
+// import { Form } from "react-bootstrap";
+// import Button from "react-bootstrap/Button";
+// import { useHistory } from "react-router-dom";
+// import { getDatabase, ref, get } from "firebase/database";
+// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+// import { toast, Toaster } from "react-hot-toast";
+// import { app } from "../Firebase/firebase.config";
 
-//     const [mydata, setData] = useState(null);
-//     const [user, setUser] = useState(
-//         {
-//             'Mobile': '',
-//             'Password': ''
-//         }
-//     )
+// const auth = getAuth(app);
+// const fireDB = getDatabase(app);
 
-//     const handleRegisterClick = () => {
-//         history.push('/doctor-register');
+// const DrLogin = () => {
+//   const history = useHistory();
+//   const [user, setUser] = useState({ Mobile: "", Password: "" });
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setUser((prev) => ({ ...prev, [name]: value }));
+//   };
+
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+//     const { Mobile, Password } = user;
+
+//     if (!Mobile || !Password) {
+//       toast.error("Mobile and Password required");
+//       return;
+//     }
+//     if (!/^\d{10}$/.test(Mobile)) {
+//       toast.error("Invalid Mobile number");
+//       return;
 //     }
 
-//     const getData = (e) => {
-//         const { value, name } = e.target;
-//         setUser(() => {
-//             return {
-//                 ...user,
-//                 [name]: value
-//             }
-//         })
+//     try {
+//       // Step 1: Find doctor by Mobile in Realtime DB
+//       const snapshot = await get(ref(fireDB, "doctor"));
+//       if (!snapshot.exists()) return toast.error("No doctors found");
+
+//       let doctorFound = null;
+//       snapshot.forEach((doc) => {
+//         const data = doc.val();
+//         if (data.Mobile === Mobile) {
+//           doctorFound = { ...data, uid: doc.key };
+//         }
+//       });
+
+//       if (!doctorFound) return toast.error("Mobile not registered");
+
+//       // Step 2: Sign in with Email & Password (Firebase Auth)
+//       await signInWithEmailAndPassword(auth, doctorFound.Email, Password);
+
+//       toast.success("Login successful!");
+//       history.replace(`/profile/${doctorFound.uid}`);
+//     } catch (error) {
+//       console.error(error);
+//       toast.error("Incorrect Mobile or Password");
 //     }
-//     const addData = async (e) => {
-//         e.preventDefault();
-//         const phonePattern = /^\d{10}$/;
+//   };
 
-//         const { Mobile, Password } = user;
+//   return (
+//     <div
+//       className="regbody d-flex align-items-center justify-content-center"
+//       style={{ background: "#FAF6ED", minHeight: "100vh" }}
+//     >
+//       <Toaster position="top-center" />
+//       <div style={{ width: "40%", padding: 40 }}>
+//         <h2 className="text-center mb-4">Doctor Login</h2>
 
-//         if (Mobile === '') {
-//             toast.error('Mobile feild is  required')
-//         }
-//         else if (!phonePattern.test(Mobile)) {
-//             toast.error('Phone number is incorrect')
-//         }
-//         else if (Password === '') {
-//             toast.error('Password feild is  required')
+//         <Form onSubmit={handleLogin}>
+//           <Form.Group className="mb-3">
+//             <Form.Label>Mobile</Form.Label>
+//             <Form.Control
+//               type="text"
+//               name="Mobile"
+//               value={user.Mobile}
+//               onChange={handleChange}
+//               placeholder="Enter Mobile"
+//             />
+//           </Form.Group>
 
-//         } else {
-//             const usersRef = ref(database, 'doctor/');
-//             const MobileToFind = user.Mobile; // Replace with the Mobile you want to search for
-//             const queryRef = query(usersRef, orderByChild('Mobile'), equalTo(MobileToFind));
+//           <Form.Group className="mb-3">
+//             <Form.Label>Password</Form.Label>
+//             <Form.Control
+//               type="password"
+//               name="Password"
+//               value={user.Password}
+//               onChange={handleChange}
+//               placeholder="Password"
+//             />
+//           </Form.Group>
 
-//             try {
-//                 const snapshot = await get(queryRef);
-//                 if (snapshot.exists()) {
-//                     // The user with the specified Mobile was found
-//                     const userData = snapshot.val();
-//                     // console.log('User Data:', userData);
-//                     const userId = Object.keys(userData)[0];
-//                     // const userKey = '-Nhv1oVpIsKsIrv7ksjP'; // The key of the user data you want to access
-//                     // console.log(userId);
-//                     // Assuming you have fetched user data into a variable called userData
-//                     const userd = userData[userId];
+//           <div className="d-flex justify-content-between mt-3">
+//             <Button type="submit" variant="primary" style={{ width: "100%" }}>
+//               Login
+//             </Button>
+//           </div>
 
-//                     if (userd) {
-//                         if (userd.ConfirmPassword === user.Password) {
-//                             history.replace(`/profile/${userId}`);
-//                             // history.push(`/SideNav/${userId}`);
-//                             toast.success('Successfully Loged In!')
+//           <div className="text-center mt-3">
+//             <Button
+//               variant="link"
+//               onClick={() => history.push("/doctor-register")}
+//             >
+//               Don't have an account? Register
+//             </Button>
+//           </div>
+//         </Form>
+//       </div>
+//     </div>
+//   );
+// };
 
-//                         } else {
-//                             toast.error('Password and Mobile is Incorrect')
-//                         }
+// export default DrLogin;
 
-//                     } else {
-//                         toast.error('user Not Found')
-//                     }
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { getDatabase, ref, get } from "firebase/database";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { toast, Toaster } from "react-hot-toast";
+import { app } from "../Firebase/firebase.config";
 
+const auth = getAuth(app);
+const fireDB = getDatabase(app);
 
-//                 } else {
-//                     console.log('User not found.');
-//                 }
-//             } catch (error) {
-//                 console.error('Error finding user data:', error);
-//             }
-//         }
-//     };
-//     const forgotPasswordRedirect =()=>{
-//         history.push('/ForgotPassword');
-//     }
-//     return (
-//         <>
-//             <div className='row'>
-//                 <ToastContainer />
+const DrLogin = () => {
+  const history = useHistory();
+  const [user, setUser] = useState({ Mobile: "", Password: "" });
+  const [focusedField, setFocusedField] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-//                 <div className='col-xl-7 col-sm-8 col-md-8'>
-//                     <ToastContainer />
-//                     <div className='w-75 mx-auto my-auto'>
-//                         <div className='container m-3 text-primary'>
-//                             <h2 className='text-center text-primary' style={{ marginTop: '10vh', textAlign: 'center' }}>Welcome To Trust You Doctor</h2>
-//                             <p className='mt-0 pt-0 text-center' color='#135078'>
-//                                 Welcome, Doctor! Your dedication to patient care is appreciated. Log in to access patient records, manage appointments, and contribute to the continuum of healthcare excellence.Your expertise, our cornerstone.
-//                             </p>
-//                         </div>
-//                         <Form >
-//                             <Form.Group className="mb-3" controlId="formBasicMobile">
-//                                 <Form.Label>Mobile address</Form.Label>
-//                                 <Form.Control type="Mobile" placeholder="Enter Mobile" onChange={getData} name='Mobile' className="input-background-color" />
-//                                 <Form.Text className="text-muted">
-//                                     We'll never share your Mobile with anyone else.
-//                                 </Form.Text>
-//                             </Form.Group>
-//                             <Form.Group className="mb-3" controlId="formBasicPassword">
-//                                 <Form.Label>Password</Form.Label>
-//                                 <Form.Control type="password" placeholder="Password" onChange={getData} name='Password' className="input-background-color" />
-//                             </Form.Group>
-//                             <Form.Group className="mb-3 text-end mr-2" controlId="formBasicCheckbox">
-//                                 <Form.Label onClick={forgotPasswordRedirect}>Forgot Password ?</Form.Label>
-//                             </Form.Group>
-//                             <div>
-//                                 <Button className='btn btn-primary w-100' onClick={addData} variant="primary" type="submit">
-//                                     Login
-//                                 </Button>
-//                             </div>
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prev) => ({ ...prev, [name]: value }));
+  };
 
-//                             <div style={{ display: 'flex', justifyContent: 'end' }} className='col-11 m-4 '>
-//                                 Don't have an account ? <Button className='btn text-danger m-0 p-0' style={{ border: 'none', background: 'transparent', }} onClick={handleRegisterClick}>Register</Button>
-//                             </div>
-//                         </Form>
-//                     </div>
-//                 </div>
-//                 <div className='col-xl-5 col-md-4 col-sm-8' style={{ background: '#135078', height: '100vh' }}>
-//                     <div style={{ marginTop: '35vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-//                         <h1>Dont have an Account?</h1>
-//                         <p className='m-3 p-3 text-center text-white' style={{ fontWeight: '400' }}>Join our network of healthcare professionals! Register now to enhance patient care, streamline appointment management, and become a part of a collaborative healthcare community. Your expertise, empowered.</p>
-//                         <button onClick={handleRegisterClick} className='btn btn-primary' style={{ backgroundColor: 'white', color: '#135078' }}>Sign Up</button>
-//                     </div>
-//                 </div>
-//             </div>
-//         </>
-//     )
-// }
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const { Mobile, Password } = user;
 
-// export default withRouter(DrLogin)
+    if (!Mobile || !Password) {
+      toast.error("Mobile and Password required");
+      return;
+    }
+    if (!/^\d{10}$/.test(Mobile)) {
+      toast.error("Invalid Mobile number");
+      return;
+    }
 
+    setLoading(true);
+    try {
+      const snapshot = await get(ref(fireDB, "doctor"));
+      if (!snapshot.exists()) {
+        toast.error("No doctors found");
+        setLoading(false);
+        return;
+      }
 
-
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { useHistory } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
-
-function DrLogin() {
-    const db = getFirestore();
-    const history = useHistory();
-
-    const [user, setUser] = useState({
-        Mobile: '',
-        Password: '',
-    });
-
-    const handleRegisterClick = () => {
-        history.push('/doctor-register');
-    };
-
-    const getData = (e) => {
-        const { value, name } = e.target;
-        setUser((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const addData = async (e) => {
-        e.preventDefault();
-        const phonePattern = /^\d{10}$/;
-        const { Mobile, Password } = user;
-
-        if (Mobile === '') {
-            toast.error('Mobile field is required');
-            return;
+      let doctorFound = null;
+      snapshot.forEach((doc) => {
+        const data = doc.val();
+        if (data.Mobile === Mobile) {
+          doctorFound = { ...data, uid: doc.key };
         }
-        if (!phonePattern.test(Mobile)) {
-            toast.error('Phone number is incorrect');
-            return;
-        }
-        if (Password === '') {
-            toast.error('Password field is required');
-            return;
-        }
+      });
 
-        try {
-            // Query Firestore for doctor with matching Mobile
-            const doctorsRef = collection(db, 'doctor');
-            const q = query(doctorsRef, where('Mobile', '==', Mobile));
-            const querySnapshot = await getDocs(q);
+      if (!doctorFound) {
+        toast.error("Mobile not registered");
+        setLoading(false);
+        return;
+      }
 
-            if (querySnapshot.empty) {
-                toast.error('User not found');
-                return;
-            }
+      await signInWithEmailAndPassword(auth, doctorFound.Email, Password);
+      toast.success("Login successful!");
+      history.replace(`/profile/${doctorFound.uid}`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Incorrect Mobile or Password");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            let loggedIn = false;
-            querySnapshot.forEach((doc) => {
-                const docData = doc.data();
-                if (docData.ConfirmPassword === Password) {
-                    toast.success('Successfully Logged In!');
-                    history.replace(`/profile/${doc.id}`);
-                    loggedIn = true;
-                }
-            });
-            if (!loggedIn) {
-                toast.error('Password and Mobile is Incorrect');
-            }
-        } catch (error) {
-            console.error('Error finding user data:', error);
-            toast.error('An error occurred during login');
-        }
-    };
+  const styles = {
+    page: {
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "linear-gradient(135deg, #e0f2fe 0%, #bae6fd 40%, #e0f7fa 100%)",
+      fontFamily: "'Nunito', 'Segoe UI', sans-serif",
+      padding: "16px",
+    },
+    card: {
+      width: "100%",
+      maxWidth: "420px",
+      background: "rgba(255,255,255,0.85)",
+      backdropFilter: "blur(16px)",
+      borderRadius: "24px",
+      boxShadow: "0 8px 40px rgba(14, 116, 144, 0.13), 0 2px 8px rgba(14,116,144,0.07)",
+      padding: "40px 32px 36px",
+      border: "1px solid rgba(186,230,253,0.6)",
+    },
+    iconWrap: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      marginBottom: "20px",
+    },
+    iconCircle: {
+      width: "64px",
+      height: "64px",
+      borderRadius: "50%",
+      background: "linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      boxShadow: "0 4px 16px rgba(14,165,233,0.30)",
+    },
+    title: {
+      textAlign: "center",
+      fontSize: "26px",
+      fontWeight: "800",
+      color: "#0c4a6e",
+      margin: "0 0 4px",
+      letterSpacing: "-0.5px",
+    },
+    subtitle: {
+      textAlign: "center",
+      fontSize: "14px",
+      color: "#7dd3fc",
+      marginBottom: "28px",
+      fontWeight: "600",
+      letterSpacing: "0.5px",
+      textTransform: "uppercase",
+    },
+    fieldGroup: {
+      marginBottom: "18px",
+    },
+    label: {
+      display: "block",
+      fontSize: "13px",
+      fontWeight: "700",
+      color: "#0369a1",
+      marginBottom: "7px",
+      letterSpacing: "0.3px",
+    },
+    inputWrap: {
+      position: "relative",
+      display: "flex",
+      alignItems: "center",
+    },
+    inputIcon: {
+      position: "absolute",
+      left: "14px",
+      top: "50%",
+      transform: "translateY(-50%)",
+      pointerEvents: "none",
+      display: "flex",
+      alignItems: "center",
+    },
+    input: (focused) => ({
+      width: "100%",
+      padding: "13px 14px 13px 44px",
+      border: focused
+        ? "2px solid #0ea5e9"
+        : "2px solid #e0f2fe",
+      borderRadius: "12px",
+      fontSize: "15px",
+      fontFamily: "'Nunito', 'Segoe UI', sans-serif",
+      fontWeight: "600",
+      color: "#0c4a6e",
+      background: focused ? "#f0f9ff" : "#f8fdff",
+      outline: "none",
+      transition: "border 0.2s, background 0.2s, box-shadow 0.2s",
+      boxShadow: focused ? "0 0 0 3px rgba(14,165,233,0.13)" : "none",
+      boxSizing: "border-box",
+    }),
+    button: {
+      width: "100%",
+      padding: "14px",
+      background: loading
+        ? "#7dd3fc"
+        : "linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)",
+      color: "#fff",
+      border: "none",
+      borderRadius: "12px",
+      fontSize: "16px",
+      fontWeight: "800",
+      fontFamily: "'Nunito', 'Segoe UI', sans-serif",
+      cursor: loading ? "not-allowed" : "pointer",
+      boxShadow: "0 4px 16px rgba(14,165,233,0.30)",
+      letterSpacing: "0.3px",
+      marginTop: "6px",
+      transition: "background 0.2s, transform 0.1s",
+    },
+    divider: {
+      textAlign: "center",
+      margin: "22px 0 14px",
+      position: "relative",
+    },
+    dividerLine: {
+      borderTop: "1px solid #e0f2fe",
+      width: "100%",
+      position: "absolute",
+      top: "50%",
+      left: 0,
+    },
+    dividerText: {
+      position: "relative",
+      background: "rgba(255,255,255,0.85)",
+      padding: "0 12px",
+      color: "#93c5fd",
+      fontSize: "12px",
+      fontWeight: "700",
+    },
+    registerBtn: {
+      display: "block",
+      width: "100%",
+      padding: "13px",
+      background: "transparent",
+      border: "2px solid #bae6fd",
+      borderRadius: "12px",
+      color: "#0284c7",
+      fontSize: "15px",
+      fontWeight: "700",
+      fontFamily: "'Nunito', 'Segoe UI', sans-serif",
+      cursor: "pointer",
+      textAlign: "center",
+      transition: "background 0.2s, border-color 0.2s",
+      letterSpacing: "0.2px",
+    },
+    footer: {
+      textAlign: "center",
+      marginTop: "24px",
+      fontSize: "12px",
+      color: "#93c5fd",
+      fontWeight: "600",
+    },
+  };
 
-    const forgotPasswordRedirect = () => {
-        history.push('/ForgotPassword');
-    };
+  return (
+    <div style={styles.page}>
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            fontFamily: "'Nunito', sans-serif",
+            fontWeight: "700",
+            borderRadius: "12px",
+            fontSize: "14px",
+          },
+        }}
+      />
 
-    return (
-        <>
-            <div className='row'>
-                <ToastContainer />
-                <div className='col-xl-7 col-sm-8 col-md-8'>
-                    <ToastContainer />
-                    <div className='w-75 mx-auto my-auto'>
-                        <div className='container m-3 text-primary'>
-                            <h2 className='text-center text-primary' style={{ marginTop: '10vh' }}>Welcome To Trust You Doctor</h2>
-                            <p className='mt-0 pt-0 text-center' color='#135078'>
-                                Welcome, Doctor! Your dedication is appreciated. Log in to access records and manage appointments.
-                            </p>
-                        </div>
-                        <Form>
-                            <Form.Group className="mb-3" controlId="formBasicMobile">
-                                <Form.Label>Mobile number</Form.Label>
-                                <Form.Control type="text" placeholder="Enter Mobile" onChange={getData} name='Mobile' className="input-background-color" />
-                                <Form.Text className="text-muted">
-                                    We'll never share your number with anyone.
-                                </Form.Text>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formBasicPassword">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password" placeholder="Password" onChange={getData} name='Password' className="input-background-color" />
-                            </Form.Group>
-                            <Form.Group className="mb-3 text-end mr-2" controlId="formBasicCheckbox">
-                                <Form.Label onClick={forgotPasswordRedirect}>Forgot Password?</Form.Label>
-                            </Form.Group>
-                            <div>
-                                <Button className='btn btn-primary w-100' onClick={addData} variant="primary" type="submit">
-                                    Login
-                                </Button>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'end' }} className='col-11 m-4 '>
-                                Don't have an account?
-                                <Button className='btn text-danger m-0 p-0' style={{ border: 'none', background: 'transparent' }} onClick={handleRegisterClick}>Register</Button>
-                            </div>
-                        </Form>
-                    </div>
-                </div>
-                <div className='col-xl-5 col-md-4 col-sm-8' style={{ background: '#135078', height: '100vh' }}>
-                    <div style={{ marginTop: '35vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-                        <h1>Don't have an Account?</h1>
-                        <p className='m-3 p-3 text-center text-white' style={{ fontWeight: '400' }}>Join our network of healthcare professionals! Register to enhance care and management.</p>
-                        <button onClick={handleRegisterClick} className='btn btn-primary' style={{ backgroundColor: 'white', color: '#135078' }}>Sign Up</button>
-                    </div>
-                </div>
+      <div style={styles.card}>
+        {/* Icon */}
+        <div style={styles.iconWrap}>
+          <div style={styles.iconCircle}>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" fill="white"/>
+              <path d="M3 21C3 17.134 7.02944 14 12 14C16.9706 14 21 17.134 21 21" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="18.5" cy="18.5" r="3.5" fill="#bae6fd" stroke="white" strokeWidth="1.5"/>
+              <path d="M18.5 17V20M17 18.5H20" stroke="#0c4a6e" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <h2 style={styles.title}>Doctor Login</h2>
+        <p style={styles.subtitle}>Trusted Medical Portal</p>
+
+        <form onSubmit={handleLogin} autoComplete="off">
+          {/* Mobile Field */}
+          <div style={styles.fieldGroup}>
+            <label style={styles.label} htmlFor="mobile-input">Mobile Number</label>
+            <div style={styles.inputWrap}>
+              <span style={styles.inputIcon}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <rect x="5" y="2" width="14" height="20" rx="3" stroke="#38bdf8" strokeWidth="2"/>
+                  <circle cx="12" cy="18" r="1" fill="#38bdf8"/>
+                </svg>
+              </span>
+              <input
+                id="mobile-input"
+                type="tel"
+                name="Mobile"
+                value={user.Mobile}
+                onChange={handleChange}
+                placeholder="10-digit mobile number"
+                maxLength={10}
+                style={styles.input(focusedField === "Mobile")}
+                onFocus={() => setFocusedField("Mobile")}
+                onBlur={() => setFocusedField(null)}
+              />
             </div>
-        </>
-    );
-}
+          </div>
+
+          {/* Password Field */}
+          <div style={styles.fieldGroup}>
+            <label style={styles.label} htmlFor="password-input">Password</label>
+            <div style={styles.inputWrap}>
+              <span style={styles.inputIcon}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <rect x="5" y="11" width="14" height="10" rx="2" stroke="#38bdf8" strokeWidth="2"/>
+                  <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#38bdf8" strokeWidth="2" strokeLinecap="round"/>
+                  <circle cx="12" cy="16" r="1.5" fill="#38bdf8"/>
+                </svg>
+              </span>
+              <input
+                id="password-input"
+                type="password"
+                name="Password"
+                value={user.Password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                style={styles.input(focusedField === "Password")}
+                onFocus={() => setFocusedField("Password")}
+                onBlur={() => setFocusedField(null)}
+              />
+            </div>
+          </div>
+
+          {/* Login Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            style={styles.button}
+          >
+            {loading ? "Signing in…" : "Login"}
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div style={styles.divider}>
+          <div style={styles.dividerLine} />
+          <span style={styles.dividerText}>OR</span>
+        </div>
+
+        {/* Register Button */}
+        <button
+          style={styles.registerBtn}
+          onClick={() => history.push("/doctor-register")}
+        >
+          Don't have an account? <span style={{ color: "#0ea5e9" }}>Register</span>
+        </button>
+
+        <div style={styles.footer}>
+          🔒 Secure & Encrypted Login
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default DrLogin;

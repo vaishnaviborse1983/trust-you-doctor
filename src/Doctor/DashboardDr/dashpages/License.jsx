@@ -362,7 +362,7 @@ const License = () => {
 
                             </div>
 
-                            <div style={{ margin: 10 }}>
+                            {/* <div style={{ margin: 10 }}>
                                 <h5>Other License 3</h5>
                                 <input
                                     type="file"
@@ -381,7 +381,7 @@ const License = () => {
                                         </Button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
 
 

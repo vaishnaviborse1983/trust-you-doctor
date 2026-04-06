@@ -12,7 +12,6 @@
   align-items: center;
 }
 
-/* Each video slide */
 .video-slide {
   width: 250px;
   height: 150px;
@@ -28,8 +27,6 @@
   border-radius: 12px;
   object-fit: cover;
 }
-
-/* ==== MainSlide.css ==== */
 
 .main-body {
   display: flex;
@@ -64,7 +61,6 @@
   color: gray;
 }
 
-/* === RESPONSIVE FIXES === */
 @media (max-width: 767px) {
   .body {
     height: auto !important;
@@ -113,7 +109,6 @@
     height: 20vh !important;
   }
 
-  /* Hide Swiper on mobile */
   .swiper_container,
   .small-swiper {
     display: none !important;
@@ -124,9 +119,8 @@
   }
 }
 
-/* Make An Appointment button smaller on desktop */
 .appointment-btn {
-  width: 60%; /* smaller width */
+  width: 60%;
   font-size: 1rem;
   padding: 8px 16px;
   transition: 0.3s ease;
@@ -136,17 +130,131 @@
   transform: scale(1.05);
 }
 
-/* On tablets, a bit wider */
 @media (max-width: 991px) {
   .appointment-btn {
     width: 70%;
   }
 }
 
-/* On mobile, full width */
 @media (max-width: 767px) {
   .appointment-btn {
     width: 100%;
     font-size: 0.9rem;
+  }
+}
+
+/* =============================================
+   COMING SOON BADGE — vivid blinking highlight
+   ============================================= */
+
+@keyframes cs-blink {
+  0% {
+    background: #e63946 !important;
+    box-shadow: 0 0 0px 0px transparent;
+    transform: scale(1);
+    border-color: #e63946;
+  }
+  25% {
+    background: #ffd600 !important;
+    box-shadow: 0 0 24px 8px #ffd600bb, 0 0 48px 16px #ff990055;
+    transform: scale(1.12);
+    border-color: #ffd600;
+  }
+  50% {
+    background: #e63946 !important;
+    box-shadow: 0 0 0px 0px transparent;
+    transform: scale(1);
+    border-color: #e63946;
+  }
+  75% {
+    background: #ff6a00 !important;
+    box-shadow: 0 0 22px 7px #ff6a00bb, 0 0 44px 14px #e6394655;
+    transform: scale(1.1);
+    border-color: #ff6a00;
+  }
+  100% {
+    background: #e63946 !important;
+    box-shadow: 0 0 0px 0px transparent;
+    transform: scale(1);
+    border-color: #e63946;
+  }
+}
+
+@keyframes cs-shimmer {
+  0%   { left: -75%; }
+  100% { left: 125%; }
+}
+
+@keyframes cs-star-pop {
+  0%,  100% { transform: scale(1)   rotate(0deg);   }
+  50%        { transform: scale(1.6) rotate(180deg); }
+}
+
+/* Reset ALL inherited gradient/clip from earlier rules */
+.coming-soon-badge,
+.coming-soon-badge * {
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+}
+
+.coming-soon-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  font-family: 'Arial Black', Arial, sans-serif !important;
+  font-size: clamp(0.92rem, 2.5vw, 1.15rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  padding: 0.44rem 1.3rem !important;
+  border-radius: 50px !important;
+  border: 2.5px solid #e63946 !important;
+  cursor: default !important;
+  user-select: none !important;
+  color: #ffffff !important;
+  background: #e63946 !important;
+  background-size: unset !important;
+  position: relative !important;
+  overflow: hidden !important;
+  animation: cs-blink 1s ease-in-out infinite !important;
+}
+
+/* Shimmer light sweep */
+.coming-soon-badge::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -75% !important;
+  width: 50% !important;
+  height: 100% !important;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  ) !important;
+  animation: cs-shimmer 1.8s infinite !important;
+  pointer-events: none !important;
+}
+
+.cs-star {
+  font-size: 0.8em !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  animation: cs-star-pop 1s ease-in-out infinite !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+}
+
+.cs-star:last-child {
+  animation-delay: 0.5s !important;
+  animation-direction: reverse !important;
+}
+
+@media (max-width: 767px) {
+  .coming-soon-badge {
+    font-size: 0.85rem !important;
+    padding: 0.32rem 0.9rem !important;
   }
 }

@@ -1,19 +1,16 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
-import { getDownloadURL, ref as ref_storage, uploadBytes, uploadBytesResumable } from 'firebase/storage';
-import { useState } from 'react';
-import { getDatabase, ref, set, onValue, push } from 'firebase/database';
+import { getDownloadURL, ref as ref_storage, uploadBytesResumable } from 'firebase/storage';
+import { useState, useEffect } from 'react';
+import { getDatabase, ref, set, onValue } from 'firebase/database';
 import './Qualification.css';
 import { useHistory } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import { auth, app, storage, database, firestore } from '../../Firebase/firebase.config';
-
-import SideNav from '../SideNav';
-import { useEffect } from 'react';
-import { GrLinkNext } from 'react-icons/gr';
 import Button from 'react-bootstrap/Button';
+import { GrLinkNext } from 'react-icons/gr';
+import { storage } from '../../Firebase/firebase.config';
+import SideNav from '../SideNav';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -26,138 +23,75 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 const Achievement = () => {
     const { id } = useParams();
     const database = getDatabase();
-    const [img, setImg] = useState('');
-    const [urls, setUrls] = useState(Array(6).fill(''));
-    const [texts, setTexts] = useState(Array(6).fill(''));
-
-    const [desc1, setDesc1] = useState('');
-    const [desc2, setDesc2] = useState('');
-    const [desc3, setDesc3] = useState('');
-    const [desc4, setDesc4] = useState('');
-    const [desc5, setDesc5] = useState('');
-    const [desc6, setDesc6] = useState('');
-
     const history = useHistory();
 
+    const [img, setImg] = useState('');
+    const [url, setUrl] = useState('');
+    const [text, setText] = useState('');
     const [description, setDescription] = useState('');
-    const [descriptionTxt, setDescriptionTxt] = useState('');
+    const [existingDescription, setExistingDescription] = useState('');
 
+    // Fetch existing image & text
     useEffect(() => {
-        fetchData(1);
-        fetchData(2);
-        fetchData(3);
-        fetchData(4);
-        fetchData(5);
-        fetchData(6);
-        fetchData('description');
-    }, [id]);
-
-    const fetchData = (index) => {
-        onValue(ref(database, `Achievement/${id}/${index}`), (snapshot) => {
+        onValue(ref(database, `Achievement/${id}/main`), (snapshot) => {
             if (snapshot.exists()) {
-                setUrls((prevUrls) => {
-                    const updatedUrls = [...prevUrls];
-                    updatedUrls[index - 1] = snapshot.val().url;
-                    return updatedUrls;
-                });
-
-                setTexts((prevTexts) => {
-                    const updatedTexts = [...prevTexts];
-                    updatedTexts[index - 1] = snapshot.val().text;
-                    return updatedTexts;
-                });
-
-                switch (index) {
-                    case 1:
-                        setDesc1(snapshot.val().text);
-                        break;
-                    case 2:
-                        setDesc2(snapshot.val().text);
-                        break;
-                    case 3:
-                        setDesc3(snapshot.val().text);
-                        break;
-                    case 4:
-                        setDesc4(snapshot.val().text);
-                        break;
-                    case 5:
-                        setDesc5(snapshot.val().text);
-                        break;
-                    case 6:
-                        setDesc6(snapshot.val().text);
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                console.error(`Data for Achievement/${id}/${index} does not exist.`);
+                const data = snapshot.val();
+                setUrl(data.url || '');
+                setText(data.text || '');
             }
         });
-    };
 
-    const putData = (key, data) => set(ref(database, key), data);
+        onValue(ref(database, `Achievement/${id}/description`), (snapshot) => {
+            if (snapshot.exists()) {
+                setExistingDescription(snapshot.val().description || '');
+            }
+        });
+    }, [id]);
 
-    const uploadData = (index) => {
-        if (img || (texts[index - 1] && texts[index - 1].trim() !== '')) {
-            const imgRef = ref_storage(storage, `Achievement/${id}/Achievement/${index}`);
+    // Upload Image + Text
+    const uploadData = () => {
+        if (!img && text.trim() === "") {
+            alert("Please upload an image or enter achievement text.");
+            return;
+        }
+
+        if (img) {
+            const imgRef = ref_storage(storage, `Achievement/${id}/Achievement/main`);
             const uploadTask = uploadBytesResumable(imgRef, img);
 
-            uploadTask
-                .then((snapshot) => {
-                    getDownloadURL(snapshot.ref).then((url) => {
-                        setUrls((prevUrls) => {
-                            const updatedUrls = [...prevUrls];
-                            updatedUrls[index - 1] = url;
-                            return updatedUrls;
-                        });
+            uploadTask.on("state_changed", null, console.error, () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    setUrl(url);
 
-                        // Update text in the state
-                        setTexts((prevTexts) => {
-                            const updatedTexts = [...prevTexts];
-                            updatedTexts[index - 1] = texts[index - 1];
-                            return updatedTexts;
-                        });
-
-                        alert("Data uploaded successfully. Please refresh the page");
-
-                        putData(`Achievement/${id}/${index}`, { url, text: texts[index - 1] });
+                    set(ref(database, `Achievement/${id}/main`), {
+                        url,
+                        text,
                     });
-                })
-                .catch((error) => {
-                    console.error('Error uploading image:', error);
+
+                    alert("Achievement uploaded successfully!");
                 });
+            });
         } else {
-            alert("Please upload a photo and enter text");
+            // Only text
+            set(ref(database, `Achievement/${id}/main`), {
+                url: url,
+                text,
+            });
+
+            alert("Achievement text saved successfully!");
         }
     };
 
-
-    const uploadText = () => {
-        console.log(description);
-        putData(`Achievement/${id}/description`, { description });
+    // Upload description
+    const uploadDescription = () => {
+        set(ref(database, `Achievement/${id}/description`), {
+            description,
+        });
+        alert("Description saved");
     };
 
     const handleNext = () => {
         history.push(`/payment/${id}`);
-    };
-
-
-    const deleteData = (index) => {
-        // Delete the data from Firebase
-        set(ref(database, `Achievement/${id}/${index}`), null).then(() => {
-            // Clear the state and update UI
-            setUrls((prevUrls) => {
-                const updatedUrls = [...prevUrls];
-                updatedUrls[index - 1] = '';
-                return updatedUrls;
-            });
-
-            setTexts((prevTexts) => {
-                const updatedTexts = [...prevTexts];
-                updatedTexts[index - 1] = '';
-                return updatedTexts;
-            });
-        });
     };
 
     return (
@@ -165,113 +99,101 @@ const Achievement = () => {
             <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
                 <SideNav id={id} />
 
-                <div>
-                    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <Box component="main" sx={{ flexGrow: 1, p: 3, maxWidth: '700px' }}>
                         <DrawerHeader />
-                        <h1>Achievement</h1>
+                        <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Achievement</h1>
 
-                        <div style={{ display: 'flex' }} className='MainDiv'>
-                            {Array.from({ length: 6 }, (_, index) => (
-                                <div key={index} style={{ margin: 10 }}>
-                                    <h5>Upload Achievement</h5>
-                                    <input
-                                        type="file"
-                                        onChange={(e) => setImg(e.target.files[0])}
-                                        className='input-background-color'
-                                        name='Licence'
-                                        style={{ width: '100%' }}
-                                    />
-                                    <input type="text" placeholder='Enter details' style={{ width: '100%' }} onChange={(e) => setTexts((prevTexts) => {
-                                        const updatedTexts = [...prevTexts];
-                                        updatedTexts[index] = e.target.value;
-                                        return updatedTexts;
-                                    })} />
-                                    <div className='row' style={{ marginTop: 10 }}>
-                                        <div className='d-flex justify-content-between' style={{ height: '8vh' }}>
-                                            <Button onClick={() => uploadData(index + 1)} className='' style={{ width: '100%', padding: '0', marginTop: '5', backgroundColor: '#0073cf' }} variant="primary" type="submit">
-                                                Upload {index + 1}   <GrLinkNext className='text-white' />
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                        {/* MAIN UPLOAD BOX */}
+                        <div
+                            style={{
+                                border: '1px solid #000',
+                                padding: 25,
+                                borderRadius: 15,
+                                marginBottom: 35,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                background: '#f9f9f9',
+                            }}
+                        >
+                            <h4>Upload an Achievement (Optional)</h4><br />
 
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', margin: 20 }}>
-                            <h5 style={{ color: 'red', userSelect: 'none' }}>Or You Can Write Your Achievements On Below</h5>
-                        </div>
-
-                        <div style={{ display: 'flex', flexDirection: 'column', border: '1px solid #000', padding: 20, borderRadius: 20 }}>
-                            <h5>Write your description:</h5>
-                            <textarea
-                                name="postContent"
-                                rows={4}
-                                cols={40}
-                                placeholder='Please write here...'
-                                onChange={(e) => setDescription(e.target.value)}
-                                style={{ whiteSpace: 'pre-line' }}
+                            <input
+                                type="file"
+                                onChange={(e) => setImg(e.target.files[0])}
+                                className='input-background-color'
+                                style={{ width: '100%', marginBottom: 10 }}
                             />
 
-                            <div className='row' style={{ marginTop: 10, marginBottom: 10 }}>
-                                <div className='d-flex justify-content-between' style={{ height: '7vh' }}>
-                                    <Button
-                                        onClick={uploadText}
-                                        className=''
-                                        style={{ width: '100%', padding: '0', margin: '0', backgroundColor: '#0073cf' }}
-                                        variant="primary"
-                                        type="submit"
-                                    >
-                                        Save    <GrLinkNext className='text-white' />
-                                    </Button>
-                                </div>
-                            </div>
+                            <input
+                                type="text"
+                                placeholder="Enter achievement details"
+                                style={{ width: '100%', padding: 8, marginTop: 5 }}
+                                onChange={(e) => setText(e.target.value)}
+                            />
 
-                            <h4>Description</h4>
-                            <h6 style={{ whiteSpace: 'pre-line' }}>{descriptionTxt}</h6>
+                            <Button
+                                onClick={uploadData}
+                                style={{ width: '100%', marginTop: 15, backgroundColor: '#0073cf' }}
+                            >
+                                Save Achievement <GrLinkNext />
+                            </Button>
+
+                            {/* Show uploaded */}
+                            {url ?
+                                <img
+                                    src={url}
+                                    alt="Uploaded"
+                                    style={{ width: 120, height: 120, marginTop: 15, objectFit: 'cover' }}
+                                />
+                                : <p style={{ marginTop: 10 }}>No Image Uploaded</p>
+                            }
+
+                            <p style={{ marginTop: 10 }}>{text}</p>
                         </div>
 
-                        <div style={{ display: 'flex', backgroundSize: 'cover' }} className='Sub'>
-                            <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }} className='smallDiv'>
-                                {Array.from({ length: 6 }, (_, index) => (
-                                    <div key={index} style={{ position: 'relative', border: '1px solid #000', marginBottom: 20, marginRight: 20, padding: 20, display: 'flex' }}>
-                                        {urls[index - 1] && urls[index - 1] !== '' ? (
-                                            <>
-                                                <img
-                                                    src={urls[index - 1]}
-                                                    style={{ width: '100px', height: '100px', cursor: 'pointer', borderWidth: 1, borderColor: 'black', objectFit: 'cover' }}
-                                                    alt={`Image ${index}`}
-                                                    onClick={() => window.open(urls[index - 1], "_blank")}
-                                                />
-                                                <Button
-                                                    variant='danger'
-                                                    onClick={() => deleteData(index)}
-                                                    style={{ position: 'absolute', top: '5px', right: '5px' }}
-                                                >
-                                                    Delete
-                                                </Button>
-                                            </>
-                                        ) : (
-                                            <div>No Image</div>
-                                        )}
-                                        <p>{texts[index - 1]}</p>
-                                    </div>
-                                ))}
-                            </div>
+                        {/* DESCRIPTION SECTION */}
+                        <div
+                            style={{
+                                border: '1px solid black',
+                                padding: 20,
+                                borderRadius: 15,
+                                background: '#f9f9f9'
+                            }}
+                        >
+                            <h4 style={{ textAlign: 'center' }}>Write Your Achievement Description</h4>
+
+                            <textarea
+                                rows={5}
+                                placeholder="Write here..."
+                                style={{ width: '100%', padding: 10, marginTop: 10 }}
+                                onChange={(e) => setDescription(e.target.value)}
+                            ></textarea>
+
+                            <Button
+                                onClick={uploadDescription}
+                                style={{ width: '100%', marginTop: 15, backgroundColor: '#0073cf' }}
+                            >
+                                Save Description <GrLinkNext />
+                            </Button>
+
+                            <h5 style={{ marginTop: 20 }}>Saved Description:</h5>
+                            <p style={{ whiteSpace: 'pre-line' }}>{existingDescription}</p>
                         </div>
 
+                        <Button
+                            variant="primary"
+                            onClick={handleNext}
+                            style={{ width: '6rem', marginTop: '2rem', marginLeft: '0' }}
+                        >
+                            Next
+                        </Button>
                     </Box>
-
-                    <Button
-                        variant='primary'
-                        onClick={handleNext}
-                        style={{ width: '5rem', marginTop: '2rem', marginLeft: '3rem' }}
-                    >
-                        Next
-                    </Button>
                 </div>
             </Box>
         </>
     );
-}
+};
 
 export default Achievement;

@@ -1,778 +1,1041 @@
-// import React, { useState, useEffect } from 'react';
-// import { withRouter } from 'react-router-dom';
-// import Navbar from '../../../Patient/components/pages/Navbar';
-// import { Container, Row, Col, Form } from 'react-bootstrap';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faSearch } from '@fortawesome/free-solid-svg-icons';
-// import './SearchDoctor.css'; // Import your custom CSS file
-// import Button from 'react-bootstrap/Button';
-// import Card from 'react-bootstrap/Card';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// import profile from './image/dp.png';
-// import { getDatabase, ref, get } from 'firebase/database';
-// import Footer from "../../../Footer/Footer"
-
-// const SearchDoctor = (props) => {
-//     const { history } = props;
-
-//     const database = getDatabase();
-//     const [doctors, setDoctors] = useState([]);
-//     const [locality, setLocality] = useState('');
-//     const [doctorName, setDoctorName] = useState('');
-//     const [selectedCategory, setSelectedCategory] = useState('');
-
-//     useEffect(() => {
-//         fetchData();
-//     }, [locality, doctorName]); // Update the dependencies
 
 
-//     const fetchData = async () => {
-//         const usersRef = ref(database, 'doctor/');
+// import React, { useState, useEffect } from "react";
+// import Navbar from "../../../Patient/components/pages/Navbar";
+// import { Container, Form } from "react-bootstrap";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faSearch, faMapMarkerAlt, faCalendarAlt,
+//   faSun, faMoon, faClock, faChevronDown, faChevronUp,
+//   faImages, faVideo, faCommentMedical, faTimes, faChevronLeft, faChevronRight,
+//   faIndianRupeeSign,
+// } from "@fortawesome/free-solid-svg-icons";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+// import profile from "./image/dp.png";
+// import "./SearchDoctor.css";
+// import Footer from "../../../Footer/Footer";
+// import BookingModal from "./BookingModal";
+// import { getDatabase, ref, get } from "firebase/database";
+// import { app } from "../../../Doctor/Firebase/firebase.config";
 
-//         try {
-//             const snapshot = await get(usersRef);
-//             if (!snapshot.exists()) {
-//                 setDoctors([]);
-//                 toast.error('No doctors found.');
-//                 return;
-//             }
+// const database = getDatabase(app);
 
-//             const userData = snapshot.val();
-//             if (!userData) {
-//                 setDoctors([]);
-//                 toast.error('No user data available.');
-//                 return;
-//             }
+// const normalizeCity = (text = "") => text.toLowerCase().split(",")[0].trim();
 
-//             const allDoctors = Object.keys(userData).map(async (doctorId) => {
-//                 const profileSnapshot = await get(ref(database, `Profile/${doctorId}/Profile`));
-//                 const profileData = profileSnapshot.val();
-//                 const imageUrl = profileData?.url || profile; // Assuming 'url' is the field containing the image URL
-
-//                 return {
-//                     id: doctorId,
-//                     data: {
-//                         ...userData[doctorId],
-//                         imageUrl,
-//                     },
-//                 };
-//             });
-
-//             const doctorsWithImageUrl = await Promise.all(allDoctors);
-
-//             // Filter doctors by ClinicAddress starting with the entered locality
-//             const filteredDoctors = locality
-//                 ? doctorsWithImageUrl.filter((doctor) => doctor.data.ClinicAddress?.toLowerCase()?.includes(locality.toLowerCase()) ||
-//                     doctor.data.Locality?.toLowerCase()?.includes(locality.toLowerCase()) ||
-//                     doctor.data.City?.toLowerCase()?.includes(locality.toLowerCase()) ||
-//                     doctor.data.State?.toLowerCase()?.includes(locality.toLowerCase()) ||
-//                     doctor.data.Country?.toLowerCase()?.includes(locality.toLowerCase())
-//                 )
-//                 : doctorsWithImageUrl;
-
-//             // Filter doctors by partial speciality within the location
-//             const finalFilteredDoctors = doctorName
-//                 ? filteredDoctors.filter((doctor) => doctor.data.Speciality?.toLowerCase()?.includes(doctorName.toLowerCase()) ||
-//                     doctor.data.Speciality2?.toLowerCase()?.includes(doctorName.toLowerCase()) ||
-//                     doctor.data.Speciality3?.toLowerCase()?.includes(doctorName.toLowerCase()) ||
-//                     doctor.data.Speciality4?.toLowerCase()?.includes(doctorName.toLowerCase()) ||
-//                     doctor.data.First?.toLowerCase()?.includes(doctorName.toLowerCase()) ||
-//                     doctor.data.Last?.toLowerCase()?.includes(doctorName.toLowerCase())
-//                 )
-//                 : filteredDoctors;
-
-
-//             setDoctors(finalFilteredDoctors);
-
-//         } catch (error) {
-//             console.error('Error fetching user data:', error);
-//             toast.error('An error occurred while fetching data');
-//         }
-//     };
-
-
-//     const handleLocalityChange = (e) => {
-//         setLocality(e.target.value);
-//     };
-
-//     const handleDoctorNameChange = (e) => {
-//         setDoctorName(e.target.value);
-//     };
-
-//     const handleCategoryClick = (category) => {
-//         setDoctorName(category);
-
-//         // Optional: Highlight the selected category
-//         setSelectedCategory(category);
-//     };
-
-//     const handleSearch = () => {
-//         fetchData();
-//     };
-
-//     const specialties = [
-//         "Acupuncture",
-//         "Allergists/Immunologists",
-//         "Anesthesiologists",
-//         "Ayurveda",
-//         "Casmetologist",
-//         "Cardiologists",
-//         "Colon and Rectal Surgeons",
-//         "Critical Care Medicine Specialists",
-//         "Dermatologists",
-//         "Diabetes",
-//         "Emergency Medicine Specialists",
-//         "Endocrinologists",
-//         "Eyes Specialist",
-//         "ENT(Eye/Nose/Throat) Specialist",
-//         "Family Physicians",
-//         "Gastroenterologists",
-//         "Geriatric Medicine Specialists",
-//         "Homeopathy",
-//         "Hernia",
-//         "Heart Specialist",
-//         "Hospice and Palliative Medicine Specialists",
-//         "Infectious Disease Specialists",
-//         "Internists",
-//         "Joint Disorder",
-//         "Kidney Disorder",
-//         "Laparoscopic",
-//         "Migraine Headache",
-//         "Medical Geneticists",
-//         "Menstrual Disorder",
-//         "Naturopathy",
-//         "Neck and back pain",
-//         "Nephrologists",
-//         "Neurologists",
-//         "Nutritionist",
-//         "Occupeenture Therepist",
-//         "Obstetricians and Gynecologists",
-//         "Oncologists",
-//         "Ophthalmologists",
-//         "Orthopedic",
-//         "Orthocare",
-//         "Osteopaths",
-//         "Otolaryngologists",
-//         "Pathologists",
-//         "Pediatricians",
-//         "Physician",
-//         "Physiatrists",
-//         "Physiotheraphy",
-//         "Physiotherepist",
-//         "Piles and Fissure",
-//         "Plastic Surgeons",
-//         "Podiatrists",
-//         "Preventive Medicine Specialists",
-//         "Psychiatrists",
-//         "Pulmonologists",
-//         "Radiologists",
-//         "Rheumatologists",
-//         "Skin Specialist",
-//         "Sleep Medicine Specialists",
-//         "Sports Medicine Specialists",
-//         "General Surgeons",
-//         "Thyroid",
-//         "Urologists",
-//         "Wellness",
-//         "Yoga and wellness"
-//     ];
-
-//     const handlePage = (id) => {
-//         console.log(id);
-//         history.push(`/SDoctorProfile/${id}`);
-//     }
-
-//     return (
-//         <>
-//             <Navbar />
-
-//             <div className='container-fluid'>
-//                 <div className='row d-flex justify-content-center align-items-center' style={{}}>
-//                     <Row className="mt-4" >
-//                         <Col md={3} >
-//                             <div className="input-group" style={{ height: '4rem' }}>
-//                                 <Form.Control
-//                                     type="text"
-//                                     placeholder="Enter Locality"
-//                                     value={locality}
-//                                     onChange={handleLocalityChange}
-//                                     className="semicircle"
-//                                 />
-//                             </div>
-//                         </Col>
-//                         <Col md={8} >
-//                             <Form.Group controlId="doctorName">
-//                                 <div className="input-group" style={{ height: '4rem' }}>
-//                                     <Form.Control
-//                                         type="text"
-//                                         placeholder="Search here for Doctors by categories or name"
-//                                         value={doctorName}
-//                                         onChange={handleDoctorNameChange}
-//                                         className="semicircle"
-//                                     />
-//                                 </div>
-//                             </Form.Group>
-//                         </Col >
-//                         <Col md={1} >
-//                             <button
-//                                 type="button"
-//                                 className="search-icon-button semicircle"
-//                                 onClick={handleSearch}
-//                             >
-//                                 <FontAwesomeIcon icon={faSearch} />
-//                             </button>
-//                         </Col>
-//                     </Row>
-//                 </div>
-
-//                 <div className='row'>
-//                     <div className='speciality col-md-2 col-xs-4 d-none d-md-block' style={{ background: '#f5f5f5', maxHeight: '100vh', overflowY: 'auto' }}>
-//                         {specialties.map((specialty, index) => (
-//                             <div
-//                                 className={`input-group category-item ${selectedCategory === specialty ? 'selected' : ''}`}
-//                                 onClick={() => handleCategoryClick(specialty)}
-//                                 key={index}
-//                                 style={{
-//                                     display: 'flex',
-//                                     alignItems: 'center',
-//                                     height: 'auto',
-//                                     padding: '0.2rem',
-//                                     // Adjusted margin value
-//                                     cursor: 'pointer',
-//                                     transition: 'background-color 0.3s',
-//                                     wordWrap: 'break-word',
-//                                     fontWeight: 'lighter'
-//                                 }}
-//                             >
-//                                 <p style={{ color: '#252525', fontFamily: 'Roboto', fontSize: '1rem', margin: 0, fontWeight: '400' }}>{specialty}</p>
-//                             </div>
-//                         ))}
-//                     </div>
-
-
-//                     <div className='col-md-10 col-xs-12' style={{ maxHeight: '100vh', overflowY: 'auto', padding: '2vh' }}>
-//                         <div className='row'>
-//                             {doctors.map(doctor => (
-//                                 <div className='col-lg-6 col-md-6 col-sm-12 col-xs-12' key={doctor.id}>
-//                                     <div className='m-10'>
-//                                         <Card className="card-container" onClick={() => { handlePage(doctor.id) }} style={{ width: '100%', background: 'white', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '8px', maxHeight: '50vh', padding: '3vh' }}>
-//                                             <div className='row no-gutters'>
-//                                                 <div className='col-md-4 col-xs-12'>
-//                                                     <Card.Img
-//                                                         variant="top"
-//                                                         src={doctor.data.imageUrl}
-//                                                         style={{
-//                                                             height: '150px', // Fixed image height for small screens
-//                                                             borderRadius: '50%',
-//                                                             overflow: 'hidden',
-//                                                             objectFit: 'cover',
-//                                                         }}
-//                                                         className="img-fluid" // Add this class for responsive images
-//                                                     />
-//                                                 </div>
-//                                                 <div className='col-md-8 col-xs-12'>
-//                                                     <Card.Body style={{ textAlign: 'left' }}>
-//                                                         <div className='row d-flex justify-content-start'>
-//                                                             <Card.Title style={{ margin: '0', padding: '0', fontSize: '1.2rem', fontWeight: 'bold' }}>{doctor.data.Prefix + " " + doctor.data.First + " " + doctor.data.Middle + " " + doctor.data.Last}</Card.Title>
-//                                                         </div>
-//                                                         <div className='row d-flex justify-content-start'>
-//                                                             <Card.Text style={{ margin: '0', padding: '0', fontSize: '1rem', color: '#555' }}>
-//                                                                 {
-//                                                                     doctor.data.Speciality
-//                                                                 }
-//                                                                 {
-//                                                                     doctor.data.Speciality2 ?
-//                                                                         " " + doctor.data.Speciality2
-//                                                                         :
-//                                                                         null
-//                                                                 }
-//                                                                 {doctor.data.Speciality3 ?
-//                                                                     " " + doctor.data.Speciality3
-//                                                                     : null
-//                                                                 }
-//                                                                 {doctor.data.Speciality4 ?
-//                                                                     " " + doctor.data.Speciality4
-//                                                                     : null
-//                                                                 }
-//                                                             </Card.Text>
-//                                                         </div>
-//                                                         <div className='row d-flex justify-content-start'>
-//                                                             <Card.Text style={{ margin: '0', padding: '0', fontSize: '0.9rem', color: '#777' }}>
-//                                                                 {doctor.data.Experience ? 'Overall Experience: ' + doctor.data.Experience + ' years' : null}
-//                                                             </Card.Text>
-//                                                         </div>
-//                                                         <div className='row d-flex justify-content-start'>
-//                                                             <Card.Text style={{ margin: '0', padding: '0', fontSize: '0.9rem', color: '#777' }}>
-//                                                                 {doctor.data.ClinicAddress ? 'Clinic Address: ' + doctor.data.ClinicAddress : null}
-//                                                             </Card.Text>
-//                                                         </div>
-//                                                     </Card.Body>
-//                                                 </div>
-//                                             </div>
-//                                         </Card>
-//                                     </div>
-//                                 </div>
-//                             ))}
-//                         </div>
-//                     </div>
-
-
-
-//                 </div>
-//             </div >
-
-//             <Footer />
-//         </>
-//     );
+// const formatTime = (t) => {
+//   if (!t) return "";
+//   try {
+//     const [h, m] = t.split(":").map(Number);
+//     const ampm = h >= 12 ? "PM" : "AM";
+//     return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${ampm}`;
+//   } catch { return t; }
 // };
 
-// export default withRouter(SearchDoctor);
+// /* Fee helper — checks backend first, falls back to stable random 700–1000 */
+// const feeCache = {};
+// const getConsultationFee = (doctor) => {
+//   const stored = doctor.Fees ?? doctor.fees ?? doctor.Fee ?? doctor.ConsultationFee ?? null;
+//   if (stored !== null && stored !== undefined && stored !== "") return Number(stored);
+//   if (!feeCache[doctor.id]) feeCache[doctor.id] = Math.floor(Math.random() * 301) + 700;
+//   return feeCache[doctor.id];
+// };
 
+// /* ── Clinic Photos Modal ── */
+// function ClinicPhotosModal({ photos, doctorName, onClose }) {
+//   const [current, setCurrent] = useState(0);
+//   const prev = () => setCurrent((c) => (c - 1 + photos.length) % photos.length);
+//   const next = () => setCurrent((c) => (c + 1) % photos.length);
 
-// import React from 'react';
-// import { withRouter } from 'react-router-dom';
-// import Navbar from '../../../Patient/components/pages/Navbar';
-// import Footer from "../../../Footer/Footer";
+//   useEffect(() => {
+//     const handleKey = (e) => {
+//       if (e.key === "Escape") onClose();
+//       if (e.key === "ArrowLeft") prev();
+//       if (e.key === "ArrowRight") next();
+//     };
+//     document.addEventListener("keydown", handleKey);
+//     return () => document.removeEventListener("keydown", handleKey);
+//   }, []);
 
-// const SearchDoctor = () => {
+//   return (
+//     <div className="photo-modal-overlay" onClick={onClose}>
+//       <div className="photo-modal" onClick={(e) => e.stopPropagation()}>
+//         <div className="photo-modal-header">
+//           <h3 className="photo-modal-title">
+//             <FontAwesomeIcon icon={faImages} /> Clinic Photos — Dr. {doctorName}
+//           </h3>
+//           <button className="photo-modal-close" onClick={onClose}>
+//             <FontAwesomeIcon icon={faTimes} />
+//           </button>
+//         </div>
+//         <div className="photo-modal-body">
+//           <div className="photo-main-wrap">
+//             <button className="photo-nav-btn left" onClick={prev}>
+//               <FontAwesomeIcon icon={faChevronLeft} />
+//             </button>
+//             <img src={photos[current]} alt={`Clinic photo ${current + 1}`} className="photo-main-img" />
+//             <button className="photo-nav-btn right" onClick={next}>
+//               <FontAwesomeIcon icon={faChevronRight} />
+//             </button>
+//           </div>
+//           <p className="photo-counter">{current + 1} / {photos.length}</p>
+//           {photos.length > 1 && (
+//             <div className="photo-thumbnails">
+//               {photos.map((src, i) => (
+//                 <img key={i} src={src} alt={`Thumb ${i + 1}`}
+//                   className={`photo-thumb${i === current ? " active" : ""}`}
+//                   onClick={() => setCurrent(i)} />
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// /* ── Timing strip ── */
+// function TimingStrip({ schedule }) {
+//   if (!schedule) return (
+//     <div className="timing-strip">
+//       <span className="timing-chip no-schedule">
+//         <FontAwesomeIcon icon={faClock} size="xs" /> Schedule not set
+//       </span>
+//     </div>
+//   );
+//   const hasMorning = schedule.morningStartTime && schedule.morningEndTime;
+//   const hasEvening = schedule.eveningStartTime && schedule.eveningEndTime;
+//   if (!hasMorning && !hasEvening) return (
+//     <div className="timing-strip">
+//       <span className="timing-chip no-schedule">
+//         <FontAwesomeIcon icon={faClock} size="xs" /> Timings not set
+//       </span>
+//     </div>
+//   );
+//   return (
+//     <div className="timing-strip">
+//       {hasMorning && (
+//         <span className="timing-chip morning">
+//           <FontAwesomeIcon icon={faSun} size="xs" />
+//           {formatTime(schedule.morningStartTime)} – {formatTime(schedule.morningEndTime)}
+//         </span>
+//       )}
+//       {hasEvening && (
+//         <span className="timing-chip evening">
+//           <FontAwesomeIcon icon={faMoon} size="xs" />
+//           {formatTime(schedule.eveningStartTime)} – {formatTime(schedule.eveningEndTime)}
+//         </span>
+//       )}
+//     </div>
+//   );
+// }
+
+// /* ── Doctor Card ── */
+// function DoctorCard({ doctor, schedule, clinicPhotos = [], onMap, onBook, isMapOpen }) {
+//   const [expanded, setExpanded] = useState(false);
+//   const [showPhotosModal, setShowPhotosModal] = useState(false);
+
+//   const videoLink = doctor.videoLink || doctor.VideoLink || null;
+//   const hasPhotos = clinicPhotos.length > 0;
+//   const hasVideo = !!videoLink;
+
+//   const storedFee = doctor.Fees ?? doctor.fees ?? doctor.Fee ?? doctor.ConsultationFee ?? null;
+//   const isEstimate = storedFee === null || storedFee === undefined || storedFee === "";
+//   const fee = getConsultationFee(doctor);
+
+//   const handleVideoClick = () => {
+//     if (hasVideo) window.open(videoLink, "_blank", "noopener,noreferrer");
+//   };
+
+//   const handleChatClick = () => {
+//     toast.info("💬 Chat with Doctor — Coming Soon!", {
+//       position: "top-center", autoClose: 3000, hideProgressBar: false,
+//       style: { fontFamily: "'Nunito', sans-serif", fontWeight: 600 },
+//     });
+//   };
+
+//   return (
+//     <div className="doctor-card">
+//       <div className="card-top-bar" />
+
+//       <div className="card-inner">
+//         <div className="card-left">
+//           <img src={doctor.imageUrl || profile} alt={`Dr. ${doctor.First}`} className="doctor-avatar" />
+//         </div>
+
+//         <div className="card-content">
+//           {/* Doctor name — full width, no fee badge here */}
+//           <div className="doctor-name">Dr. {doctor.First} {doctor.Last}</div>
+
+//           <TimingStrip schedule={schedule} />
+
+//           <div className="info-list">
+//             {doctor.Speciality && (
+//               <div className="info-item">
+//                 <span className="info-label">Speciality</span>
+//                 <span className="info-value">{doctor.Speciality}</span>
+//               </div>
+//             )}
+
+//             {/* Fee shown right after Speciality */}
+//             <div className="info-item fee-info-item">
+//               <span className="info-label">Fees</span>
+//               <span className="fee-inline">
+//                 <FontAwesomeIcon icon={faIndianRupeeSign} className="fee-inline-icon" />
+//                 <span className="fee-inline-amount">{fee}</span>
+//                 {isEstimate && (
+//                   <span className="fee-inline-est" title="Estimated — fee not set by doctor">~est.</span>
+//                 )}
+//               </span>
+//             </div>
+
+//             {doctor.Education && (
+//               <div className="info-item">
+//                 <span className="info-label">Education</span>
+//                 <span className="info-value">{doctor.Education}</span>
+//               </div>
+//             )}
+//             {doctor.Experience && (
+//               <div className="info-item">
+//                 <span className="info-label">Experience</span>
+//                 <span className="info-value">{doctor.Experience} years</span>
+//               </div>
+//             )}
+//             {doctor.ClinicName && (
+//               <div className="info-item">
+//                 <span className="info-label">Clinic</span>
+//                 <span className="info-value">{doctor.ClinicName}</span>
+//               </div>
+//             )}
+//             {doctor.ClinicAddress && (
+//               <div className="info-item">
+//                 <span className="info-label">Address</span>
+//                 <span className="info-value">{doctor.ClinicAddress}</span>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+
+//       {doctor.Description && (
+//         <div className="doctor-description-section">
+//           <p className={`desc-text${expanded ? " expanded" : ""}`}>{doctor.Description}</p>
+//           <button className="read-more-btn" onClick={() => setExpanded(!expanded)}>
+//             <FontAwesomeIcon icon={expanded ? faChevronUp : faChevronDown} size="xs" />
+//             {expanded ? "Show less" : "Read more"}
+//           </button>
+//         </div>
+//       )}
+
+//       <div className="extra-info-row">
+//         <div className="extra-info-item">
+//           <span className="extra-info-label">
+//             <FontAwesomeIcon icon={faImages} className="extra-icon" /> Clinic Photos
+//           </span>
+//           {hasPhotos ? (
+//             <button className="extra-info-action photos-btn" onClick={() => setShowPhotosModal(true)}>
+//               View Photos ({clinicPhotos.length})
+//             </button>
+//           ) : (
+//             <span className="extra-info-dash">—</span>
+//           )}
+//         </div>
+
+//         <div className="extra-info-item">
+//           <span className="extra-info-label">
+//             <FontAwesomeIcon icon={faVideo} className="extra-icon" /> Video Link
+//           </span>
+//           {hasVideo ? (
+//             <button className="extra-info-action video-btn" onClick={handleVideoClick}>Watch Video</button>
+//           ) : (
+//             <span className="extra-info-dash">—</span>
+//           )}
+//         </div>
+
+//         <div className="extra-info-item">
+//           <span className="extra-info-label">
+//             <FontAwesomeIcon icon={faCommentMedical} className="extra-icon" /> Chat
+//           </span>
+//           <button className="extra-info-action chat-btn" onClick={handleChatClick}>Chat Soon</button>
+//         </div>
+//       </div>
+
+//       {/* Action buttons — no fee in Book button */}
+//       <div className="card-actions">
+//         <button className="btn-map" onClick={() => onMap(doctor)}>
+//           <FontAwesomeIcon icon={faMapMarkerAlt} /> View Map
+//         </button>
+//         <button className="btn-book" onClick={() => onBook(doctor)}>
+//           <FontAwesomeIcon icon={faCalendarAlt} /> Book Appointment
+//         </button>
+//       </div>
+
+//       {isMapOpen && <div id={`map-${doctor.id}`} className="doctor-map" />}
+
+//       {showPhotosModal && hasPhotos && (
+//         <ClinicPhotosModal
+//           photos={clinicPhotos}
+//           doctorName={`${doctor.First} ${doctor.Last}`}
+//           onClose={() => setShowPhotosModal(false)}
+//         />
+//       )}
+//     </div>
+//   );
+// }
+
+// /* ── Main ── */
+// export default function SearchDoctor() {
+//   const [doctors, setDoctors] = useState([]);
+//   const [locality, setLocality] = useState("");
+//   const [doctorName, setDoctorName] = useState("");
+//   const [loading, setLoading] = useState(false);
+//   const [searched, setSearched] = useState(false);
+//   const [selectedDoctor, setSelectedDoctor] = useState(null);
+//   const [mapLoaded, setMapLoaded] = useState(false);
+//   const [showBookingModal, setShowBookingModal] = useState(false);
+//   const [bookingDoctor, setBookingDoctor] = useState(null);
+//   const [doctorSchedules, setDoctorSchedules] = useState({});
+//   const [doctorClinicPhotos, setDoctorClinicPhotos] = useState({});
+
+//   useEffect(() => {
+//     if (window.google?.maps) { setMapLoaded(true); return; }
+//     const s = document.createElement("script");
+//     s.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`;
+//     s.async = true; s.defer = true;
+//     s.onload = () => setMapLoaded(true);
+//     s.onerror = () => toast.error("Google Maps failed to load");
+//     document.head.appendChild(s);
+//   }, []);
+
+//   useEffect(() => {
+//     if (!mapLoaded) return;
+//     let retry;
+//     const init = () => {
+//       if (window.google?.maps?.places) {
+//         const input = document.getElementById("locality-input");
+//         if (!input) return;
+//         const ac = new window.google.maps.places.Autocomplete(input, {
+//           types: ["(cities)"], componentRestrictions: { country: "in" },
+//         });
+//         ac.addListener("place_changed", () => {
+//           const p = ac.getPlace();
+//           setLocality(p.formatted_address || p.name || "");
+//         });
+//       } else { retry = setTimeout(init, 100); }
+//     };
+//     init();
+//     return () => clearTimeout(retry);
+//   }, [mapLoaded]);
+
+//   const fetchDoctorSchedules = async (ids) => {
+//     const schedules = {};
+//     for (const id of ids) {
+//       try {
+//         const snap = await get(ref(database, `doctor/${id}/schedule`));
+//         if (snap.exists()) {
+//           const data = snap.val();
+//           const key = Object.keys(data)[0];
+//           if (key) schedules[id] = data[key];
+//         }
+//       } catch (e) { console.error(e); }
+//     }
+//     setDoctorSchedules(schedules);
+//   };
+
+//   const fetchDoctorClinicPhotos = async (ids) => {
+//     const photos = {};
+//     for (const id of ids) {
+//       try {
+//         const snap = await get(ref(database, `Profile/${id}/Clinic`));
+//         if (snap.exists()) {
+//           const data = snap.val();
+//           if (Array.isArray(data.images) && data.images.length > 0) {
+//             photos[id] = data.images.filter(Boolean);
+//           }
+//         }
+//       } catch (e) { console.error(e); }
+//     }
+//     setDoctorClinicPhotos(photos);
+//   };
+
+//   const fetchDoctors = async () => {
+//     const searchName = doctorName.trim().toLowerCase();
+//     const searchCity = normalizeCity(locality);
+//     if (!searchName && !searchCity) {
+//       toast.warning("Please enter a doctor name or city"); return;
+//     }
+//     try {
+//       setLoading(true); setSearched(true);
+//       const snap = await get(ref(database, "doctor"));
+//       if (!snap.exists()) { setDoctors([]); return; }
+//       const all = Object.entries(snap.val()).map(([id, v]) => ({ id, ...v }));
+//       const filtered = all.filter((d) => {
+//         const nameMatch = !searchName ||
+//           (d.First || "").toLowerCase().includes(searchName) ||
+//           (d.Last || "").toLowerCase().includes(searchName) ||
+//           (d.Speciality || "").toLowerCase().includes(searchName) ||
+//           (d.ClinicName || "").toLowerCase().includes(searchName) ||
+//           (d.ClinicAddress || "").toLowerCase().includes(searchName);
+//         const locMatch = !searchCity ||
+//           normalizeCity(d.Locality).includes(searchCity) ||
+//           (d.ClinicAddress || "").toLowerCase().includes(searchCity);
+//         return nameMatch && locMatch;
+//       });
+//       setDoctors(filtered);
+//       if (filtered.length) {
+//         const ids = filtered.map((d) => d.id);
+//         fetchDoctorSchedules(ids);
+//         fetchDoctorClinicPhotos(ids);
+//       }
+//     } catch (e) {
+//       console.error(e); toast.error("Failed to fetch doctors");
+//     } finally { setLoading(false); }
+//   };
+
+//   const handleKeyDown = (e) => {
+//     if (e.key === "Enter") { e.preventDefault(); fetchDoctors(); }
+//   };
+
+//   const showDoctorOnMap = (doctor) => {
+//     if (!mapLoaded) { toast.error("Map still loading"); return; }
+//     const isAlready = selectedDoctor?.id === doctor.id;
+//     setSelectedDoctor(isAlready ? null : doctor);
+//     if (isAlready) return;
+//     setTimeout(() => {
+//       const mapDiv = document.getElementById(`map-${doctor.id}`);
+//       if (!mapDiv) return;
+//       const geocoder = new window.google.maps.Geocoder();
+//       geocoder.geocode(
+//         { address: `${doctor.ClinicAddress}, ${doctor.Locality || ""}` },
+//         (results, status) => {
+//           if (status !== "OK" || !results[0]) { toast.error("Location not found"); return; }
+//           const map = new window.google.maps.Map(mapDiv, { center: results[0].geometry.location, zoom: 15 });
+//           new window.google.maps.Marker({
+//             map, position: results[0].geometry.location,
+//             title: `Dr. ${doctor.First} ${doctor.Last}`,
+//           });
+//         }
+//       );
+//     }, 150);
+//   };
+
+//   const handleBookAppointment = (doctor) => { setBookingDoctor(doctor); setShowBookingModal(true); };
+//   const handleCloseBookingModal = () => { setShowBookingModal(false); setBookingDoctor(null); };
+
 //   return (
 //     <>
 //       <Navbar />
+//       <Container fluid className="search-doctor-container">
+//         <ToastContainer position="top-right" autoClose={3000} />
 
-//       <div
-//         style={{
-//           display: "flex",
-//           justifyContent: "center",
-//           alignItems: "center",
-//           height: "80vh",
-//           flexDirection: "column",
-//           textAlign: "center"
-//         }}
-//       >
-//         <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🚧 Coming Soon 🚧</h1>
-//         <p style={{ fontSize: "1.2rem", color: "#555" }}>
-//           This feature is currently under innovation. We are working hard to bring it to you soon!
-//         </p>
-//       </div>
+//         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+//           <span className="cs-label">
+//             <span className="cs-star">✦</span>
+//             Coming Soon
+//             <span className="cs-star">✦</span>
+//           </span>
+//           <p style={{ marginTop: "0.5rem", color: "#64748b", fontSize: "0.88rem" }}>
+//             More doctors &amp; specialities expanding to your city soon!
+//           </p>
+//         </div>
 
+//         <div className="search-row">
+//           <Form.Control
+//             id="locality-input"
+//             type="text"
+//             placeholder="📍 City"
+//             value={locality}
+//             onChange={(e) => setLocality(e.target.value)}
+//             onKeyDown={handleKeyDown}
+//             style={{ maxWidth: 160 }}
+//           />
+//           <div className="divider" />
+//           <Form.Control
+//             type="text"
+//             placeholder="Search by doctor name, speciality or clinic..."
+//             value={doctorName}
+//             onChange={(e) => setDoctorName(e.target.value)}
+//             onKeyDown={handleKeyDown}
+//           />
+//           <button className="search-btn" onClick={fetchDoctors}>
+//             <FontAwesomeIcon icon={faSearch} /> Search
+//           </button>
+//         </div>
+
+//         {loading ? (
+//           <p className="status-msg">Looking up doctors…</p>
+//         ) : searched && doctors.length === 0 ? (
+//           <div className="coming-soon-banner">
+//             <p>No doctors found in this area yet. We're expanding — check back soon!</p>
+//           </div>
+//         ) : !searched ? (
+//           <div className="coming-soon-banner">
+//             <p>Search for doctors by city or speciality above.</p>
+//           </div>
+//         ) : (
+//           <div className="doctors-grid">
+//             {doctors.map((doctor) => (
+//               <DoctorCard
+//                 key={doctor.id}
+//                 doctor={doctor}
+//                 schedule={doctorSchedules[doctor.id] || null}
+//                 clinicPhotos={doctorClinicPhotos[doctor.id] || []}
+//                 onMap={showDoctorOnMap}
+//                 onBook={handleBookAppointment}
+//                 isMapOpen={selectedDoctor?.id === doctor.id}
+//               />
+//             ))}
+//           </div>
+//         )}
+//       </Container>
+
+//       {bookingDoctor && (
+//         <BookingModal
+//           show={showBookingModal}
+//           handleClose={handleCloseBookingModal}
+//           doctor={bookingDoctor}
+//         />
+//       )}
 //       <Footer />
 //     </>
 //   );
-// };
+// }
 
-// export default withRouter(SearchDoctor);
-
-
-// import React, { useState, useEffect } from 'react';
-// import { withRouter } from 'react-router-dom';
-// import Navbar from '../../../Patient/components/pages/Navbar';
-// import { Container, Row, Col, Form } from 'react-bootstrap';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faSearch } from '@fortawesome/free-solid-svg-i  cons';
-// import './SearchDoctor.css';
-// import Button from 'react-bootstrap/Button';
-// import Card from 'react-bootstrap/Card';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// import profile from './image/dp.png';
-// import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
-// import Footer from "../../../Footer/Footer";
-
-// const SearchDoctor = (props) => {
-//     const { history } = props;
-
-//     const db = getFirestore(); // Firestore instance
-
-//     const [doctors, setDoctors] = useState([]);
-//     const [locality, setLocality] = useState('');
-//     const [doctorName, setDoctorName] = useState('');
-//     const [selectedCategory, setSelectedCategory] = useState('');
-
-//     useEffect(() => {
-//         fetchData();
-//         // eslint-disable-next-line
-//     }, [locality, doctorName]); // update on filter change
-
-//    const fetchData = async () => {
-//     try {
-//         const doctorsRef = collection(db, "doctors");
-//         const querySnapshot = await getDocs(doctorsRef);
-
-//         let allDoctors = [];
-//         querySnapshot.forEach((doc) => {
-//             allDoctors.push({ id: doc.id, data: doc.data() });
-//         });
-
-//         console.log("All Firestore doctors:", allDoctors); // Debug
-
-//         // Filter by locality (e.g., address includes...)
-//         let filteredDoctors = allDoctors;
-//         if (locality) {
-//             filteredDoctors = filteredDoctors.filter((doctor) =>
-//                 (doctor.data.address || "").toLowerCase().includes(locality.toLowerCase())
-//             );
-//         }
-
-//         // Filter by doctorName (Speciality OR Name)
-//         let finalFilteredDoctors = filteredDoctors;
-//         if (doctorName) {
-//             finalFilteredDoctors = finalFilteredDoctors.filter((doctor) =>
-//                 (doctor.data.Speciality || "").toLowerCase().includes(doctorName.toLowerCase()) ||
-//                 (doctor.data.Name || "").toLowerCase().includes(doctorName.toLowerCase())
-//             );
-//         }
-
-//         console.log("Filtered doctors:", finalFilteredDoctors); // Debug
-
-//         setDoctors(finalFilteredDoctors);
-
-//         if (finalFilteredDoctors.length === 0) {
-//             toast.info('No doctors found for the provided search.');
-//         }
-//     } catch (error) {
-//         console.error('Error fetching doctors:', error);
-//         toast.error('An error occurred while fetching data');
-//     }
-// };
-
-
-//     const handleLocalityChange = (e) => {
-//         setLocality(e.target.value);
-//     };
-
-//     const handleDoctorNameChange = (e) => {
-//         setDoctorName(e.target.value);
-//     };
-
-//     const handleCategoryClick = (category) => {
-//         setDoctorName(category);
-//         setSelectedCategory(category);
-//     };
-
-//     const handleSearch = () => {
-//         fetchData();
-//     };
-
-//     const specialties = [
-//         // ... your specialties list ...
-//         "Acupuncture", "Allergists/Immunologists", "Anesthesiologists", "Ayurveda", "Casmetologist",
-//         "Cardiologists", "Colon and Rectal Surgeons", "Critical Care Medicine Specialists", "Dermatologists",
-//         "Diabetes", "Emergency Medicine Specialists", "Endocrinologists", "Eyes Specialist",
-//         "ENT(Eye/Nose/Throat) Specialist", "Family Physicians", "Gastroenterologists",
-//         "Geriatric Medicine Specialists", "Homeopathy", "Hernia", "Heart Specialist",
-//         "Hospice and Palliative Medicine Specialists", "Infectious Disease Specialists", "Internists",
-//         "Joint Disorder", "Kidney Disorder", "Laparoscopic", "Migraine Headache", "Medical Geneticists",
-//         "Menstrual Disorder", "Naturopathy", "Neck and back pain", "Nephrologists", "Neurologists",
-//         "Nutritionist", "Occupeenture Therepist", "Obstetricians and Gynecologists", "Oncologists",
-//         "Ophthalmologists", "Orthopedic", "Orthocare", "Osteopaths", "Otolaryngologists",
-//         "Pathologists", "Pediatricians", "Physician", "Physiatrists", "Physiotheraphy", "Physiotherepist",
-//         "Piles and Fissure", "Plastic Surgeons", "Podiatrists", "Preventive Medicine Specialists",
-//         "Psychiatrists", "Pulmonologists", "Radiologists", "Rheumatologists", "Skin Specialist",
-//         "Sleep Medicine Specialists", "Sports Medicine Specialists", "General Surgeons", "Thyroid",
-//         "Urologists", "Wellness", "Yoga and wellness"
-//     ];
-
-//     const handlePage = (id) => {
-//         history.push(`/SDoctorProfile/${id}`);
-//     }
-
-//     return (
-//         <>
-//             <Navbar />
-//             <ToastContainer />
-//             <div className='container-fluid'>
-//                 <div className='row d-flex justify-content-center align-items-center'>
-//                     <Row className="mt-4">
-//                         <Col md={3}>
-//                             <div className="input-group" style={{ height: '4rem' }}>
-//                                 <Form.Control
-//                                     type="text"
-//                                     placeholder="Enter Locality"
-//                                     value={locality}
-//                                     onChange={handleLocalityChange}
-//                                     className="semicircle"
-//                                 />
-//                             </div>
-//                         </Col>
-//                         <Col md={8}>
-//                             <Form.Group controlId="doctorName">
-//                                 <div className="input-group" style={{ height: '4rem' }}>
-//                                     <Form.Control
-//                                         type="text"
-//                                         placeholder="Search here for Doctors by categories or name"
-//                                         value={doctorName}
-//                                         onChange={handleDoctorNameChange}
-//                                         className="semicircle"
-//                                     />
-//                                 </div>
-//                             </Form.Group>
-//                         </Col>
-//                         <Col md={1}>
-//                             <button
-//                                 type="button"
-//                                 className="search-icon-button semicircle"
-//                                 onClick={handleSearch}
-//                             >
-//                                 <FontAwesomeIcon icon={faSearch} />
-//                             </button>
-//                         </Col>
-//                     </Row>
-//                 </div>
-
-//                 <div className='row'>
-//                     <div className='speciality col-md-2 col-xs-4 d-none d-md-block' style={{ background: '#f5f5f5', maxHeight: '100vh', overflowY: 'auto' }}>
-//                         {specialties.map((specialty, index) => (
-//                             <div
-//                                 className={`input-group category-item ${selectedCategory === specialty ? 'selected' : ''}`}
-//                                 onClick={() => handleCategoryClick(specialty)}
-//                                 key={index}
-//                                 style={{
-//                                     display: 'flex',
-//                                     alignItems: 'center',
-//                                     height: 'auto',
-//                                     padding: '0.2rem',
-//                                     cursor: 'pointer',
-//                                     transition: 'background-color 0.3s',
-//                                     wordWrap: 'break-word',
-//                                     fontWeight: 'lighter'
-//                                 }}
-//                             >
-//                                 <p style={{ color: '#252525', fontFamily: 'Roboto', fontSize: '1rem', margin: 0, fontWeight: '400' }}>{specialty}</p>
-//                             </div>
-//                         ))}
-//                     </div>
-
-//                     <div className='col-md-10 col-xs-12' style={{ maxHeight: '100vh', overflowY: 'auto', padding: '2vh' }}>
-//                         <div className='row'>
-//                             {doctors.map(doctor => (
-//                                 <div className='col-lg-6 col-md-6 col-sm-12 col-xs-12' key={doctor.id}>
-//                                     <div className='m-10'>
-//                                         <Card className="card-container" onClick={() => { handlePage(doctor.id) }} style={{ width: '100%', background: 'white', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '8px', maxHeight: '50vh', padding: '3vh' }}>
-//                                             <div className='row no-gutters'>
-//                                                 <div className='col-md-4 col-xs-12'>
-//                                                     <Card.Img
-//                                                         variant="top"
-//                                                         src={doctor.data.url || profile}
-//                                                         style={{
-//                                                             height: '150px',
-//                                                             borderRadius: '50%',
-//                                                             objectFit: 'cover',
-//                                                         }}
-//                                                         className="img-fluid"
-//                                                     />
-//                                                 </div>
-//                                                 <div className='col-md-8 col-xs-12'>
-//                                                     <Card.Body style={{ textAlign: 'left' }}>
-//                                                         <div className='row d-flex justify-content-start'>
-//                                                             <Card.Title style={{ margin: '0', padding: '0', fontSize: '1.2rem', fontWeight: 'bold' }}>{doctor.data.Name}</Card.Title>
-//                                                         </div>
-//                                                         <div className='row d-flex justify-content-start'>
-//                                                             <Card.Text style={{ margin: '0', padding: '0', fontSize: '1rem', color: '#555' }}>
-//                                                                 {doctor.data.Speciality}
-//                                                             </Card.Text>
-//                                                         </div>
-//                                                         <div className='row d-flex justify-content-start'>
-//                                                             <Card.Text style={{ margin: '0', padding: '0', fontSize: '0.9rem', color: '#777' }}>
-//                                                                 {doctor.data.address}
-//                                                             </Card.Text>
-//                                                         </div>
-//                                                         <div className='row d-flex justify-content-start'>
-//                                                             <Card.Text style={{ margin: '0', padding: '0', fontSize: '0.9rem', color: '#777' }}>
-//                                                                 {doctor.data.phoneno ? 'Phone: ' + doctor.data.phoneno : null}
-//                                                             </Card.Text>
-//                                                         </div>
-//                                                     </Card.Body>
-//                                                 </div>
-//                                             </div>
-//                                         </Card>
-//                                     </div>
-//                                 </div>
-//                             ))}
-//                         </div>
-//                     </div>
-//                 </div>
-//             </div>
-//             <Footer />
-//         </>
-//     );
-// };
-
-// export default withRouter(SearchDoctor);
-
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../../Patient/components/pages/Navbar";
-import { Container, Row, Col, Form, Card, Button } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch, faMapMarkerAlt, faCalendarAlt,
+  faSun, faMoon, faClock, faChevronDown, faChevronUp,
+  faImages, faVideo, faCommentMedical, faTimes, faChevronLeft, faChevronRight,
+  faIndianRupeeSign,
+} from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import profile from "./image/dp.png";
 import "./SearchDoctor.css";
 import Footer from "../../../Footer/Footer";
-
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import BookingModal from "./BookingModal";
+import { getDatabase, ref, get } from "firebase/database";
 import { app } from "../../../Doctor/Firebase/firebase.config";
+import SpecialityAutosuggest from "../pages/Register/SpecialityAutosuggest";
 
-const firestore = getFirestore(app);
+const database = getDatabase(app);
 
+const normalizeCity = (text = "") => text.toLowerCase().split(",")[0].trim();
+
+const formatTime = (t) => {
+  if (!t) return "";
+  try {
+    const [h, m] = t.split(":").map(Number);
+    const ampm = h >= 12 ? "PM" : "AM";
+    return `${h % 12 || 12}:${String(m).padStart(2, "0")} ${ampm}`;
+  } catch { return t; }
+};
+
+const feeCache = {};
+const getConsultationFee = (doctor) => {
+  const stored = doctor.Fees ?? doctor.fees ?? doctor.Fee ?? doctor.ConsultationFee ?? null;
+  if (stored !== null && stored !== undefined && stored !== "") return Number(stored);
+  if (!feeCache[doctor.id]) feeCache[doctor.id] = Math.floor(Math.random() * 301) + 700;
+  return feeCache[doctor.id];
+};
+
+/* ── Clinic Photos Modal ── */
+function ClinicPhotosModal({ photos, doctorName, onClose }) {
+  const [current, setCurrent] = useState(0);
+  const prev = () => setCurrent((c) => (c - 1 + photos.length) % photos.length);
+  const next = () => setCurrent((c) => (c + 1) % photos.length);
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, []);
+
+  return (
+    <div className="photo-modal-overlay" onClick={onClose}>
+      <div className="photo-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="photo-modal-header">
+          <h3 className="photo-modal-title">
+            <FontAwesomeIcon icon={faImages} /> Clinic Photos — Dr. {doctorName}
+          </h3>
+          <button className="photo-modal-close" onClick={onClose}>
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        </div>
+        <div className="photo-modal-body">
+          <div className="photo-main-wrap">
+            <button className="photo-nav-btn left" onClick={prev}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            <img src={photos[current]} alt={`Clinic photo ${current + 1}`} className="photo-main-img" />
+            <button className="photo-nav-btn right" onClick={next}>
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          </div>
+          <p className="photo-counter">{current + 1} / {photos.length}</p>
+          {photos.length > 1 && (
+            <div className="photo-thumbnails">
+              {photos.map((src, i) => (
+                <img key={i} src={src} alt={`Thumb ${i + 1}`}
+                  className={`photo-thumb${i === current ? " active" : ""}`}
+                  onClick={() => setCurrent(i)} />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Timing strip ── */
+function TimingStrip({ schedule }) {
+  if (!schedule) return (
+    <div className="timing-strip">
+      <span className="timing-chip no-schedule">
+        <FontAwesomeIcon icon={faClock} size="xs" /> Schedule not set
+      </span>
+    </div>
+  );
+  const hasMorning = schedule.morningStartTime && schedule.morningEndTime;
+  const hasEvening = schedule.eveningStartTime && schedule.eveningEndTime;
+  if (!hasMorning && !hasEvening) return (
+    <div className="timing-strip">
+      <span className="timing-chip no-schedule">
+        <FontAwesomeIcon icon={faClock} size="xs" /> Timings not set
+      </span>
+    </div>
+  );
+  return (
+    <div className="timing-strip">
+      {hasMorning && (
+        <span className="timing-chip morning">
+          <FontAwesomeIcon icon={faSun} size="xs" />
+          {formatTime(schedule.morningStartTime)} – {formatTime(schedule.morningEndTime)}
+        </span>
+      )}
+      {hasEvening && (
+        <span className="timing-chip evening">
+          <FontAwesomeIcon icon={faMoon} size="xs" />
+          {formatTime(schedule.eveningStartTime)} – {formatTime(schedule.eveningEndTime)}
+        </span>
+      )}
+    </div>
+  );
+}
+
+/* ── Doctor Card ── */
+function DoctorCard({ doctor, schedule, clinicPhotos = [], onMap, onBook, isMapOpen }) {
+  const [expanded, setExpanded] = useState(false);
+  const [showPhotosModal, setShowPhotosModal] = useState(false);
+
+  const videoLink = doctor.videoLink || doctor.VideoLink || null;
+  const hasPhotos = clinicPhotos.length > 0;
+  const hasVideo = !!videoLink;
+
+  const storedFee = doctor.Fees ?? doctor.fees ?? doctor.Fee ?? doctor.ConsultationFee ?? null;
+  const isEstimate = storedFee === null || storedFee === undefined || storedFee === "";
+  const fee = getConsultationFee(doctor);
+
+  const handleVideoClick = () => {
+    if (hasVideo) window.open(videoLink, "_blank", "noopener,noreferrer");
+  };
+
+  const handleChatClick = () => {
+    toast.info("💬 Chat with Doctor — Coming Soon!", {
+      position: "top-center", autoClose: 3000, hideProgressBar: false,
+      style: { fontFamily: "'Nunito', sans-serif", fontWeight: 600 },
+    });
+  };
+
+  return (
+    <div className="doctor-card">
+      <div className="card-top-bar" />
+
+      <div className="card-inner">
+        <div className="card-left">
+          <img src={doctor.imageUrl || profile} alt={`Dr. ${doctor.First}`} className="doctor-avatar" />
+        </div>
+
+        <div className="card-content">
+          <div className="doctor-name">Dr. {doctor.First} {doctor.Last}</div>
+
+          <TimingStrip schedule={schedule} />
+
+          <div className="info-list">
+            {doctor.Speciality && (
+              <div className="info-item">
+                <span className="info-label">Speciality</span>
+                <span className="info-value">{doctor.Speciality}</span>
+              </div>
+            )}
+            <div className="info-item fee-info-item">
+              <span className="info-label">Fees</span>
+              <span className="fee-inline">
+                <FontAwesomeIcon icon={faIndianRupeeSign} className="fee-inline-icon" />
+                <span className="fee-inline-amount">{fee}</span>
+                {isEstimate && (
+                  <span className="fee-inline-est" title="Estimated — fee not set by doctor">~est.</span>
+                )}
+              </span>
+            </div>
+            {doctor.Education && (
+              <div className="info-item">
+                <span className="info-label">Education</span>
+                <span className="info-value">{doctor.Education}</span>
+              </div>
+            )}
+            {doctor.Experience && (
+              <div className="info-item">
+                <span className="info-label">Experience</span>
+                <span className="info-value">{doctor.Experience} years</span>
+              </div>
+            )}
+            {doctor.ClinicName && (
+              <div className="info-item">
+                <span className="info-label">Clinic</span>
+                <span className="info-value">{doctor.ClinicName}</span>
+              </div>
+            )}
+            {doctor.ClinicAddress && (
+              <div className="info-item">
+                <span className="info-label">Address</span>
+                <span className="info-value">{doctor.ClinicAddress}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {doctor.Description && (
+        <div className="doctor-description-section">
+          <p className={`desc-text${expanded ? " expanded" : ""}`}>{doctor.Description}</p>
+          <button className="read-more-btn" onClick={() => setExpanded(!expanded)}>
+            <FontAwesomeIcon icon={expanded ? faChevronUp : faChevronDown} size="xs" />
+            {expanded ? "Show less" : "Read more"}
+          </button>
+        </div>
+      )}
+
+      <div className="extra-info-row">
+        <div className="extra-info-item">
+          <span className="extra-info-label">
+            <FontAwesomeIcon icon={faImages} className="extra-icon" /> Clinic Photos
+          </span>
+          {hasPhotos ? (
+            <button className="extra-info-action photos-btn" onClick={() => setShowPhotosModal(true)}>
+              View Photos ({clinicPhotos.length})
+            </button>
+          ) : (
+            <span className="extra-info-dash">—</span>
+          )}
+        </div>
+        <div className="extra-info-item">
+          <span className="extra-info-label">
+            <FontAwesomeIcon icon={faVideo} className="extra-icon" /> Video Link
+          </span>
+          {hasVideo ? (
+            <button className="extra-info-action video-btn" onClick={handleVideoClick}>Watch Video</button>
+          ) : (
+            <span className="extra-info-dash">—</span>
+          )}
+        </div>
+        <div className="extra-info-item">
+          <span className="extra-info-label">
+            <FontAwesomeIcon icon={faCommentMedical} className="extra-icon" /> Chat
+          </span>
+          <button className="extra-info-action chat-btn" onClick={handleChatClick}>Chat Soon</button>
+        </div>
+      </div>
+
+      <div className="card-actions">
+        <button className="btn-map" onClick={() => onMap(doctor)}>
+          <FontAwesomeIcon icon={faMapMarkerAlt} /> View Map
+        </button>
+        <button className="btn-book" onClick={() => onBook(doctor)}>
+          <FontAwesomeIcon icon={faCalendarAlt} /> Book Appointment
+        </button>
+      </div>
+
+      {isMapOpen && <div id={`map-${doctor.id}`} className="doctor-map" />}
+
+      {showPhotosModal && hasPhotos && (
+        <ClinicPhotosModal
+          photos={clinicPhotos}
+          doctorName={`${doctor.First} ${doctor.Last}`}
+          onClose={() => setShowPhotosModal(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ── Main ── */
 export default function SearchDoctor() {
   const [doctors, setDoctors] = useState([]);
   const [locality, setLocality] = useState("");
   const [doctorName, setDoctorName] = useState("");
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingDoctor, setBookingDoctor] = useState(null);
+  const [doctorSchedules, setDoctorSchedules] = useState({});
+  const [doctorClinicPhotos, setDoctorClinicPhotos] = useState({});
 
+  useEffect(() => {
+    if (window.google?.maps) { setMapLoaded(true); return; }
+    const s = document.createElement("script");
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`;
+    s.async = true; s.defer = true;
+    s.onload = () => setMapLoaded(true);
+    s.onerror = () => toast.error("Google Maps failed to load");
+    document.head.appendChild(s);
+  }, []);
+
+  useEffect(() => {
+    if (!mapLoaded) return;
+    let retry;
+    const init = () => {
+      if (window.google?.maps?.places) {
+        const input = document.getElementById("locality-input");
+        if (!input) return;
+        const ac = new window.google.maps.places.Autocomplete(input, {
+          types: ["(cities)"], componentRestrictions: { country: "in" },
+        });
+        ac.addListener("place_changed", () => {
+          const p = ac.getPlace();
+          setLocality(p.formatted_address || p.name || "");
+        });
+      } else { retry = setTimeout(init, 100); }
+    };
+    init();
+    return () => clearTimeout(retry);
+  }, [mapLoaded]);
+
+  const fetchDoctorSchedules = async (ids) => {
+    const schedules = {};
+    for (const id of ids) {
+      try {
+        const snap = await get(ref(database, `doctor/${id}/schedule`));
+        if (snap.exists()) {
+          const data = snap.val();
+          const key = Object.keys(data)[0];
+          if (key) schedules[id] = data[key];
+        }
+      } catch (e) { console.error(e); }
+    }
+    setDoctorSchedules(schedules);
+  };
+
+  const fetchDoctorClinicPhotos = async (ids) => {
+    const photos = {};
+    for (const id of ids) {
+      try {
+        const snap = await get(ref(database, `Profile/${id}/Clinic`));
+        if (snap.exists()) {
+          const data = snap.val();
+          if (Array.isArray(data.images) && data.images.length > 0) {
+            photos[id] = data.images.filter(Boolean);
+          }
+        }
+      } catch (e) { console.error(e); }
+    }
+    setDoctorClinicPhotos(photos);
+  };
+
+  // ── ORIGINAL fetch logic — untouched ──
   const fetchDoctors = async () => {
     const searchName = doctorName.trim().toLowerCase();
-    const searchLocality = locality.trim().toLowerCase();
-
-    if (!searchName && !searchLocality) {
-      toast.warning("Please enter doctor name or locality to search");
-      return;
+    const searchCity = normalizeCity(locality);
+    if (!searchName && !searchCity) {
+      toast.warning("Please enter a doctor name or city"); return;
     }
-
     try {
-      setLoading(true);
-      setSearched(true);
-
-      const querySnapshot = await getDocs(collection(firestore, "doctor"));
-      const allDoctors = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      // 🔍 Lowercase matching for name, speciality, and locality
-      const filtered = allDoctors.filter((doctor) => {
-        const first = doctor.First?.toLowerCase() || "";
-        const last = doctor.Last?.toLowerCase() || "";
-        const speciality = doctor.Speciality?.toLowerCase() || "";
-        const address = doctor.ClinicAddress?.toLowerCase() || "";
-        const docLocality = doctor.Locality?.toLowerCase() || "";
-
-        const nameMatch =
-          !searchName ||
-          first.includes(searchName) ||
-          last.includes(searchName) ||
-          speciality.includes(searchName);
-
-        const locationMatch =
-          !searchLocality ||
-          address.includes(searchLocality) ||
-          docLocality.includes(searchLocality);
-
-        return nameMatch && locationMatch;
+      setLoading(true); setSearched(true);
+      const snap = await get(ref(database, "doctor"));
+      if (!snap.exists()) { setDoctors([]); return; }
+      const all = Object.entries(snap.val()).map(([id, v]) => ({ id, ...v }));
+      const filtered = all.filter((d) => {
+        const nameMatch = !searchName ||
+          (d.First || "").toLowerCase().includes(searchName) ||
+          (d.Last || "").toLowerCase().includes(searchName) ||
+          (d.Speciality || "").toLowerCase().includes(searchName) ||
+          (d.ClinicName || "").toLowerCase().includes(searchName) ||
+          (d.ClinicAddress || "").toLowerCase().includes(searchName);
+        const locMatch = !searchCity ||
+          normalizeCity(d.Locality).includes(searchCity) ||
+          (d.ClinicAddress || "").toLowerCase().includes(searchCity);
+        return nameMatch && locMatch;
       });
-
       setDoctors(filtered);
-    } catch (error) {
-      console.error("Error fetching doctors:", error);
-      toast.error("Failed to fetch doctors");
-    } finally {
-      setLoading(false);
-    }
+      if (filtered.length) {
+        const ids = filtered.map((d) => d.id);
+        fetchDoctorSchedules(ids);
+        fetchDoctorClinicPhotos(ids);
+      }
+    } catch (e) {
+      console.error(e); toast.error("Failed to fetch doctors");
+    } finally { setLoading(false); }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      fetchDoctors();
-    }
+    if (e.key === "Enter") { e.preventDefault(); fetchDoctors(); }
   };
+
+  // When chip tapped — set name then immediately search
+  const handleSpecialitySelect = (name) => {
+    setDoctorName(name);
+    // small timeout so state update settles before search reads it
+    setTimeout(() => {
+      const searchName = name.trim().toLowerCase();
+      const searchCity = normalizeCity(locality);
+      if (!searchName && !searchCity) return;
+      setLoading(true); setSearched(true);
+      get(ref(database, "doctor")).then((snap) => {
+        if (!snap.exists()) { setDoctors([]); return; }
+        const all = Object.entries(snap.val()).map(([id, v]) => ({ id, ...v }));
+        const filtered = all.filter((d) => {
+          const nameMatch = !searchName ||
+            (d.First || "").toLowerCase().includes(searchName) ||
+            (d.Last || "").toLowerCase().includes(searchName) ||
+            (d.Speciality || "").toLowerCase().includes(searchName) ||
+            (d.ClinicName || "").toLowerCase().includes(searchName) ||
+            (d.ClinicAddress || "").toLowerCase().includes(searchName);
+          const locMatch = !searchCity ||
+            normalizeCity(d.Locality).includes(searchCity) ||
+            (d.ClinicAddress || "").toLowerCase().includes(searchCity);
+          return nameMatch && locMatch;
+        });
+        setDoctors(filtered);
+        if (filtered.length) {
+          fetchDoctorSchedules(filtered.map((d) => d.id));
+          fetchDoctorClinicPhotos(filtered.map((d) => d.id));
+        }
+      }).catch((e) => { console.error(e); toast.error("Failed to fetch doctors"); })
+        .finally(() => setLoading(false));
+    }, 0);
+  };
+
+  const showDoctorOnMap = (doctor) => {
+    if (!mapLoaded) { toast.error("Map still loading"); return; }
+    const isAlready = selectedDoctor?.id === doctor.id;
+    setSelectedDoctor(isAlready ? null : doctor);
+    if (isAlready) return;
+    setTimeout(() => {
+      const mapDiv = document.getElementById(`map-${doctor.id}`);
+      if (!mapDiv) return;
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode(
+        { address: `${doctor.ClinicAddress}, ${doctor.Locality || ""}` },
+        (results, status) => {
+          if (status !== "OK" || !results[0]) { toast.error("Location not found"); return; }
+          const map = new window.google.maps.Map(mapDiv, { center: results[0].geometry.location, zoom: 15 });
+          new window.google.maps.Marker({
+            map, position: results[0].geometry.location,
+            title: `Dr. ${doctor.First} ${doctor.Last}`,
+          });
+        }
+      );
+    }, 150);
+  };
+
+  const handleBookAppointment = (doctor) => { setBookingDoctor(doctor); setShowBookingModal(true); };
+  const handleCloseBookingModal = () => { setShowBookingModal(false); setBookingDoctor(null); };
 
   return (
     <>
       <Navbar />
-      <Container fluid className="search-doctor-container py-5">
-        <ToastContainer />
+      <Container fluid className="search-doctor-container">
+        <ToastContainer position="top-right" autoClose={3000} />
 
-        {/* 🔍 Search Section */}
-        <Row className="justify-content-center mb-4">
-          <Col md={3}>
-            <Form.Control
-              type="text"
-              placeholder="Enter Locality"
-              value={locality}
-              onChange={(e) => setLocality(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="search-input"
-            />
-          </Col>
-          <Col md={7}>
-            <Form.Control
-              type="text"
-              placeholder="Search Doctor by Name or Speciality"
+        <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+          <span className="cs-label">
+            <span className="cs-star">✦</span>
+            Coming Soon
+            <span className="cs-star">✦</span>
+          </span>
+          <p style={{ marginTop: "0.5rem", color: "#64748b", fontSize: "0.88rem" }}>
+            More doctors &amp; specialities expanding to your city soon!
+          </p>
+        </div>
+
+        {/* ── Search row — only change from original ── */}
+        <div className="search-row" style={{ position: "relative" }}>
+          {/* City input — identical to original */}
+          <input
+            id="locality-input"
+            className="form-control"
+            type="text"
+            placeholder="📍 City"
+            value={locality}
+            onChange={(e) => setLocality(e.target.value)}
+            onKeyDown={handleKeyDown}
+            style={{ maxWidth: 160 }}
+          />
+          <div className="divider" />
+
+          {/* Search input — wrapped with SpecialityAutosuggest */}
+          <div style={{
+            flex: 1, minWidth: 0, position: "relative",
+            display: "flex", alignItems: "stretch", height: "42px",
+          }}>
+            <SpecialityAutosuggest
               value={doctorName}
               onChange={(e) => setDoctorName(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="search-input"
+              onSelect={handleSpecialitySelect}
+              onSearch={fetchDoctors}
+              placeholder="Search by doctor name, clinic, speciality or address..."
             />
-          </Col>
-          <Col md={1}>
-            <Button onClick={fetchDoctors} className="search-btn">
-              <FontAwesomeIcon icon={faSearch} />
-            </Button>
-          </Col>
-        </Row>
+          </div>
 
-        {/* 🩺 Results Section */}
-        <Row className="justify-content-center">
-          {loading ? (
-            <p className="text-center text-muted">Loading doctors...</p>
-          ) : searched && doctors.length === 0 ? (
-            <p className="text-center text-muted mt-4">
-              No doctors found matching your search.
-            </p>
-          ) : (
-            doctors.map((doctor) => (
-              <Col md={5} className="mb-4" key={doctor.id}>
-                <Card className="doctor-card card-container shadow-sm">
-                  <Row className="g-0">
-                    <Col
-                      md={4}
-                      className="d-flex align-items-center justify-content-center"
-                    >
-                      <div className="doctor-img-container semicircle">
-                        <Card.Img
-                          variant="top"
-                          src={doctor.imageUrl || profile}
-                          className="doctor-img"
-                        />
-                      </div>
-                    </Col>
-                    <Col md={8}>
-                      <Card.Body>
-                        <Card.Title className="doctor-name">
-                          Dr. {doctor.First} {doctor.Last}
-                        </Card.Title>
-                        <Card.Text className="doctor-detail">
-                          <strong>Speciality:</strong> {doctor.Speciality}
-                        </Card.Text>
-                        <Card.Text className="doctor-detail">
-                          <strong>Education:</strong> {doctor.Education || "N/A"}
-                        </Card.Text>
-                        <Card.Text className="doctor-detail">
-                          <strong>Locality:</strong> {doctor.Locality || "N/A"}
-                        </Card.Text>
-                        <Card.Text className="doctor-detail">
-                          <strong>Clinic:</strong> {doctor.ClinicName}
-                        </Card.Text>
-                        <Card.Text className="doctor-detail">
-                          <strong>Address:</strong> {doctor.ClinicAddress}
-                        </Card.Text>
-                        <Card.Text className="doctor-detail">
-                          <strong>License No:</strong> {doctor.LicenseNumber}
-                        </Card.Text>
-                      </Card.Body>
-                    </Col>
-                  </Row>
-                </Card>
-              </Col>
-            ))
-          )}
-        </Row>
+          <button className="search-btn" onClick={fetchDoctors}>
+            <FontAwesomeIcon icon={faSearch} /> Search
+          </button>
+        </div>
+
+        {loading ? (
+          <p className="status-msg">Looking up doctors…</p>
+        ) : searched && doctors.length === 0 ? (
+          <div className="coming-soon-banner">
+            <p>No doctors found in this area yet. We're expanding — check back soon!</p>
+          </div>
+        ) : !searched ? (
+          <div className="coming-soon-banner">
+            <p>Search for doctors by city or speciality above.</p>
+          </div>
+        ) : (
+          <div className="doctors-grid">
+            {doctors.map((doctor) => (
+              <DoctorCard
+                key={doctor.id}
+                doctor={doctor}
+                schedule={doctorSchedules[doctor.id] || null}
+                clinicPhotos={doctorClinicPhotos[doctor.id] || []}
+                onMap={showDoctorOnMap}
+                onBook={handleBookAppointment}
+                isMapOpen={selectedDoctor?.id === doctor.id}
+              />
+            ))}
+          </div>
+        )}
       </Container>
+
+      {bookingDoctor && (
+        <BookingModal
+          show={showBookingModal}
+          handleClose={handleCloseBookingModal}
+          doctor={bookingDoctor}
+        />
+      )}
       <Footer />
     </>
   );

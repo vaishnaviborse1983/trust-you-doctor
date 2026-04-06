@@ -1,56 +1,391 @@
-.bControl{
-    border: none;
-    background-color: transparent !important;
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --grad-start: #0a3d6b;
+  --grad-mid: #0e6b8a;
+  --grad-end: #0d9488;
+  --grad: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-mid) 50%, var(--grad-end) 100%);
+  --grad-soft: linear-gradient(135deg, #e8f4fd 0%, #e0f7f5 100%);
+  --accent: #0d9488;
+  --accent-light: #ccfbf1;
+  --primary: #0a3d6b;
+  --primary-light: #dbeafe;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --card-bg: #ffffff;
+  --input-bg: #f8fafc;
+  --shadow-sm: 0 1px 8px rgba(10, 61, 107, 0.08);
+  --shadow-md: 0 4px 24px rgba(10, 61, 107, 0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
 }
 
-.mainContainer{
-    border:none;
-    border-radius: 25px;
-    padding: 2vh; 
-    box-shadow: 0 5px 15px rgba(0,0, 0, 0.35);
-    position: relative;
-    margin-left: 3vw;
-    width: 80vw;
-}
-.profileimg{
-    /* position: absolute; */
-    /* align-items: center; */
-    /* border-radius:50%; */
-   
+* { box-sizing: border-box; }
+
+/* ── PAGE BACKGROUND ── */
+.ep-page-bg {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 15% 15%, rgba(13,148,136,0.09) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(10,61,107,0.07) 0%, transparent 45%),
+    linear-gradient(160deg, #e4f2fc 0%, #edf7f6 50%, #dff4f1 100%);
 }
 
-.childContainer{
-    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
-     border-radius: 25px;
-    width: 80vw;
-    margin-left: 3vw;
-    padding: 3vh;
-
+/* ── MAIN CONTENT WRAPPER - constrains width with margins ── */
+.ep-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+  width: 100%;
 }
 
-.label{
-    font-size: larger;
-    
+/* ── PAGE HEADER ── */
+.ep-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-top: 0.5rem;
 }
 
-.pControl{
-    font-size: large;
-    font-weight: 500;
-    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+.ep-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  white-space: nowrap;
 }
 
-.desr{
-    width: 100%;
-    font-size: large;
-    font-weight: 400;
-    color: black;
-}
-.pControl::placeholder{
-    color:grey;
+.ep-header-line {
+  flex: 1;
+  height: 2px;
+  background: var(--grad);
+  border-radius: 2px;
+  opacity: 0.3;
 }
 
-@media(max-width : 767px) {
-    .directioncolum{
-        flex-direction: column;
-    }
+/* ── SECTION CARD ── */
+.ep-section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.ep-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--grad);
+  color: #fff;
+}
+
+.ep-section-icon {
+  width: 32px;
+  height: 32px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.ep-section-header h3 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.03em;
+}
+
+.ep-section-body { padding: 1.25rem; }
+
+/* ── PHOTO CARD ── */
+.ep-photo-card {
+  background: var(--grad-soft);
+  border-radius: var(--radius);
+  border: 1px solid #bfdbfe;
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.ep-avatar-wrap { position: relative; display: inline-block; }
+
+.ep-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 16px rgba(10, 61, 107, 0.2);
+}
+
+.ep-avatar-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 26px;
+  height: 26px;
+  background: var(--grad);
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: #fff;
+}
+
+.ep-photo-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-align: center;
+}
+
+.ep-photo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+/* ── PERSONAL INFO LAYOUT ── */
+.ep-personal-layout {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* ── FORM GROUPS ── */
+.ep-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ep-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+}
+
+.ep-input {
+  width: 100%;
+  padding: 0.52rem 0.8rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  transition: border-color 0.18s, box-shadow 0.18s;
+  outline: none;
+}
+
+.ep-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+  background: #fff;
+}
+
+.ep-input:disabled {
+  background: #f1f5f9;
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.ep-input::placeholder { color: #b0bec5; font-weight: 400; }
+
+.ep-textarea { resize: vertical; min-height: 90px; }
+
+/* ── SESSION BLOCKS ── */
+.ep-schedule-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.ep-session-block {
+  background: var(--grad-soft);
+  border-radius: var(--radius-sm);
+  border: 1px solid #bfdbfe;
+  padding: 1rem;
+}
+
+.ep-session-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ep-time-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+/* MUI overrides */
+.ep-session-block .MuiInputBase-root {
+  font-family: 'Nunito', sans-serif !important;
+  font-size: 0.82rem !important;
+  border-radius: var(--radius-sm) !important;
+  background: #fff !important;
+}
+.ep-session-block .MuiOutlinedInput-notchedOutline { border-color: var(--border) !important; }
+.ep-session-block .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline,
+.ep-session-block .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--accent) !important;
+}
+.ep-session-block .MuiInputLabel-root {
+  font-family: 'Nunito', sans-serif !important;
+  font-size: 0.75rem !important;
+}
+
+/* ── BUTTONS ── */
+.ep-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.52rem 1.1rem;
+  border-radius: var(--radius-sm);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+
+.ep-btn-primary {
+  background: var(--grad);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(13, 148, 136, 0.3);
+}
+.ep-btn-primary:hover { box-shadow: 0 4px 18px rgba(13, 148, 136, 0.45); transform: translateY(-1px); }
+
+.ep-btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+}
+.ep-btn-outline:hover { background: var(--primary-light); }
+
+.ep-btn-danger { background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+.ep-btn-danger:hover { background: #fecaca; }
+
+.ep-btn-sm { padding: 0.32rem 0.8rem; font-size: 0.74rem; }
+.ep-btn-full { width: 100%; }
+.ep-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* ── CLINIC IMAGES ── */
+.clinic-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.clinic-img-item {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1.5px solid var(--border);
+  aspect-ratio: 4/3;
+}
+
+.clinic-img-item img { width: 100%; height: 100%; object-fit: cover; }
+
+.clinic-img-del {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(220, 38, 38, 0.88);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── FILE INPUT ── */
+.ep-file-input {
+  width: 100%;
+  padding: 0.42rem 0.65rem;
+  border: 1.5px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--input-bg);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.8rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+.ep-file-input:focus { outline: none; border-color: var(--accent); }
+
+/* ── GRIDS ── */
+.ep-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+.ep-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.9rem; }
+.ep-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.9rem; }
+
+/* ── FORM FOOTER ── */
+.ep-form-footer {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 1.1rem 1.25rem;
+  background: var(--grad-soft);
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .ep-wrapper { padding: 0 1rem 2.5rem; }
+}
+
+@media (max-width: 700px) {
+  .ep-personal-layout { grid-template-columns: 1fr; }
+  .ep-photo-card { flex-direction: row; align-items: center; padding: 1rem; gap: 1rem; }
+  .ep-photo-card .ep-photo-actions { flex-direction: row; flex-wrap: wrap; }
+  .ep-photo-card .ep-btn-full { flex: 1 1 45%; }
+  .ep-grid-2, .ep-grid-3, .ep-grid-4 { grid-template-columns: 1fr 1fr; }
+  .ep-schedule-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .ep-wrapper { padding: 0 0.75rem 2rem; }
+  .ep-grid-2, .ep-grid-3, .ep-grid-4 { grid-template-columns: 1fr; }
+  .ep-time-row { grid-template-columns: 1fr 1fr; }
+  .ep-section-body { padding: 1rem; }
+  .ep-form-footer { flex-direction: column; }
+  .ep-form-footer .ep-btn { width: 100%; }
+  .ep-photo-card { flex-direction: column; }
 }

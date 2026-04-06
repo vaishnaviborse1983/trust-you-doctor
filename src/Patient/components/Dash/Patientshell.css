@@ -1,0 +1,19 @@
+/* PatientShell.css */
+.psh-root {
+  display: flex;
+  min-height: 100vh;
+  background: #f0f4f8;
+  font-family: 'Segoe UI', Nunito, sans-serif;
+}
+
+.psh-main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .psh-main {
+    padding-top: 54px; /* space for mobile top bar */
+  }
+}

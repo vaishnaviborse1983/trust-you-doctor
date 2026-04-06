@@ -1,26 +1,643 @@
-/* 🔹 Dark chocolaty numbers (desktop + mobile) */
-.topbar-link,
-.small-numbers a {
-  font-weight: bold;
-  color: #5D4037;
+/* ============================================================
+   TRUST DOCTOR NAVBAR - FULL RESPONSIVE (Desktop + Mobile)
+   ✅ Deep Blue → Teal/Turquoise gradient theme
+   ✅ Dropdown overflow fix applied
+   ✅ Complete mobile-first responsive styles
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.navbar-wrapper,
+.navbar-wrapper * {
+  font-family: 'Inter', sans-serif !important;
+  box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════
+   TOP ACCENT STRIP
+═══════════════════════════════════════════ */
+.navbar-wrapper {
+  position: relative;
+  z-index: 1000;
+}
+.navbar-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0A2F6C, #1A6B8C, #2A9D8F, #1A6B8C, #0A2F6C);
+  background-size: 200% 100%;
+  animation: gradientMove 3s linear infinite;
+  z-index: 10;
+}
+@keyframes gradientMove {
+  0%   { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ═══════════════════════════════════════════
+   PHONE BAR
+═══════════════════════════════════════════ */
+.top-bar {
+  background: linear-gradient(135deg, #0A2F6C 0%, #1A6B8C 50%, #2A9D8F 100%) !important;
+  padding: 6px 32px;
+}
+.topbar-link {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: rgba(255,255,255,0.95) !important;
   text-decoration: none;
 }
+.topbar-link:hover { color: #ffffff !important; }
 
-.topbar-link:hover,
-.small-numbers a:hover {
-  color: #3E2723; /* even darker chocolate on hover */
-  text-decoration: none; /* no underline */
+/* ═══════════════════════════════════════════
+   LOGO ROW
+═══════════════════════════════════════════ */
+.main-navbar {
+  background: #ffffff !important;
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: 0 2px 15px rgba(10, 47, 108, 0.1) !important;
+}
+.main-navbar .container-fluid {
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+}
+.topbar-logo {
+  width: 190px;
+  transition: transform 0.2s ease;
+}
+.topbar-logo:hover { transform: scale(1.02); }
+
+/* ═══════════════════════════════════════════
+   AUTH BUTTONS
+═══════════════════════════════════════════ */
+.auth-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.auth-btn {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 8px 22px !important;
+  border-radius: 8px !important;
+  transition: all 0.22s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  text-decoration: none !important;
+}
+.btn-outline-primary.auth-btn {
+  border: 2px solid transparent !important;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, #0A2F6C, #1A6B8C, #2A9D8F) border-box !important;
+  color: #0A2F6C !important;
+  border-radius: 8px !important;
+}
+.btn-outline-primary.auth-btn:hover {
+  background: linear-gradient(135deg, #0A2F6C, #1A6B8C, #2A9D8F) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 8px 20px rgba(10, 47, 108, 0.3) !important;
+}
+.btn-primary.auth-btn {
+  background: linear-gradient(135deg, #0A2F6C, #1A6B8C, #2A9D8F) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3) !important;
+}
+.btn-primary.auth-btn:hover {
+  background: linear-gradient(135deg, #072356, #125470, #1E7A6F) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 25px rgba(10, 47, 108, 0.4) !important;
 }
 
-/* 🔹 Logo resizing */
-@media (max-width: 576px) {
-  .topbar-logo {
-    width: 130px !important; /* smaller logo on mobile */
+/* ═══════════════════════════════════════════
+   NAV MENU BANDS
+   KEY FIX: overflow visible so dropdowns show
+═══════════════════════════════════════════ */
+.menu-row {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.first-menu-row,
+.second-menu-row {
+  background: linear-gradient(135deg, #0A2F6C 0%, #1A6B8C 60%, #2A9D8F 100%) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  position: relative;
+  overflow: visible !important; /* ✅ FIXED: was overflow:hidden which clipped dropdowns */
+}
+
+/* Shimmer overlay — uses pseudo element so overflow:visible is safe */
+.first-menu-row::before,
+.second-menu-row::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.0) 0%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.0) 100%);
+  pointer-events: none;
+  animation: shimmer 8s infinite;
+  z-index: 1;
+  overflow: hidden;
+}
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  20%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+.second-menu-row {
+  border-top: 1px solid rgba(255,255,255,0.15) !important;
+  box-shadow: 0 10px 25px -5px rgba(10, 47, 108, 0.3) !important;
+}
+
+.first-menu-row .container-fluid,
+.second-menu-row .container-fluid {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  position: relative;
+  z-index: 2;
+  overflow: visible !important; /* ✅ FIXED */
+}
+
+/* ─── Menu container ─── */
+.menu-container {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  overflow: visible !important; /* ✅ FIXED */
+  position: relative;
+}
+
+/* ─── Menu items ─── */
+.menu-link,
+.highlight-link,
+.menu-dropdown,
+.menu-dropdown .dropdown-toggle {
+  flex: 1 1 0 !important;
+  text-align: center !important;
+}
+
+.menu-link,
+.highlight-link,
+.menu-dropdown .dropdown-toggle {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 15.5px !important;
+  font-weight: 500 !important;
+  color: rgba(255,255,255,0.95) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 12px 8px !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  letter-spacing: 0px !important;
+  line-height: 1.3 !important;
+  transition: all 0.25s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.menu-link::before,
+.menu-dropdown .dropdown-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.07),
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0.07));
+  transition: left 0.5s ease;
+  z-index: -1;
+}
+.menu-link:hover::before,
+.menu-dropdown .dropdown-toggle:hover::before { left: 0; }
+
+.menu-link:hover,
+.highlight-link:hover,
+.menu-dropdown .dropdown-toggle:hover {
+  color: #ffffff !important;
+  box-shadow: inset 0 -3px 0 rgba(255,255,255,0.8) !important;
+  transform: none !important;
+  border: none !important;
+}
+
+/* Caret */
+.menu-dropdown .dropdown-toggle::after {
+  margin-left: 6px !important;
+  opacity: 0.8;
+  transition: transform 0.3s;
+  border-top-color: rgba(255,255,255,0.9);
+}
+.menu-dropdown .dropdown-toggle[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+.menu-dropdown .dropdown-toggle[aria-expanded="true"] {
+  background: rgba(255,255,255,0.15) !important;
+  box-shadow: inset 0 -3px 0 rgba(255,255,255,0.8) !important;
+}
+
+/* ═══════════════════════════════════════════
+   DESKTOP DROPDOWN PANELS
+═══════════════════════════════════════════ */
+.menu-dropdown {
+  position: relative !important;
+}
+
+.menu-dropdown .dropdown-menu {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  z-index: 9999 !important;
+  background: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 15px 35px rgba(10, 47, 108, 0.25) !important;
+  padding: 8px 0 !important;
+  margin-top: 0 !important;
+  min-width: 260px !important;
+  overflow: hidden !important;
+  animation: dropFade 0.2s ease;
+}
+
+.menu-dropdown .dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #0A2F6C, #1A6B8C, #2A9D8F);
+}
+
+@keyframes dropFade {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.menu-dropdown .dropdown-item {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #0A2F6C !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+  position: relative;
+  white-space: nowrap !important;
+}
+.menu-dropdown .dropdown-item:hover {
+  background: linear-gradient(90deg, rgba(10,47,108,0.05), rgba(42,157,143,0.08)) !important;
+  color: #0A2F6C !important;
+  padding-left: 32px !important;
+}
+.menu-dropdown .dropdown-item::before {
+  content: '';
+  position: absolute;
+  left: 12px; top: 50%;
+  transform: translateY(-50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0A2F6C, #2A9D8F);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.menu-dropdown .dropdown-item:hover::before { opacity: 1; }
+
+/* ═══════════════════════════════════════════
+   USER CHIP
+═══════════════════════════════════════════ */
+.user-info {
+  background: linear-gradient(135deg, #f0f7ff, #e6f3f0) !important;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  border: 1px solid rgba(42, 157, 143, 0.2);
+}
+.user-info span {
+  color: #0A2F6C;
+  font-weight: 600;
+  background: linear-gradient(135deg, #0A2F6C, #2A9D8F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.user-info small {
+  font-size: 11px;
+  color: #1A6B8C !important;
+}
+
+/* ═══════════════════════════════════════════
+   HAMBURGER TOGGLER
+═══════════════════════════════════════════ */
+.navbar-toggler {
+  border: 2px solid rgba(10, 47, 108, 0.25) !important;
+  border-radius: 8px !important;
+  padding: 6px 10px !important;
+  transition: all 0.2s ease !important;
+}
+.navbar-toggler:hover {
+  background: linear-gradient(135deg, #0A2F6C, #1A6B8C) !important;
+  border-color: transparent !important;
+}
+.navbar-toggler:hover .navbar-toggler-icon {
+  filter: brightness(0) invert(1);
+}
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.3) !important;
+}
+.navbar-toggler-icon {
+  transition: filter 0.2s ease;
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE OFFCANVAS DRAWER
+═══════════════════════════════════════════ */
+.offcanvas {
+  background: #fff !important;
+  width: min(300px, 85vw) !important;
+  border-left: none !important;
+  box-shadow: -8px 0 32px rgba(10, 47, 108, 0.18) !important;
+}
+.offcanvas-header {
+  background: linear-gradient(135deg, #0A2F6C, #1A6B8C, #2A9D8F) !important;
+  border-bottom: none !important;
+  padding: 16px 20px !important;
+}
+.offcanvas-title {
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  color: #fff !important;
+  letter-spacing: 0.2px;
+}
+.offcanvas .btn-close {
+  filter: brightness(0) invert(1) !important;
+  opacity: 0.85 !important;
+  transition: opacity 0.2s !important;
+}
+.offcanvas .btn-close:hover { opacity: 1 !important; }
+
+.offcanvas .navbar-nav { padding: 6px 0; }
+
+.offcanvas .nav-link {
+  color: #0A2F6C !important;
+  font-weight: 600 !important;
+  font-size: 14.5px !important;
+  padding: 13px 20px !important;
+  border-bottom: 1px solid rgba(10, 47, 108, 0.07) !important;
+  transition: all 0.18s ease !important;
+  background: transparent !important;
+  position: relative;
+  border-left: 3px solid transparent !important;
+}
+.offcanvas .nav-link:hover {
+  background: linear-gradient(90deg, rgba(10,47,108,0.04), rgba(42,157,143,0.04)) !important;
+  border-left-color: #2A9D8F !important;
+  padding-left: 26px !important;
+  color: #0A2F6C !important;
+}
+
+/* Drawer dropdown toggles */
+.offcanvas .dropdown-toggle {
+  color: #0A2F6C !important;
+  font-weight: 600 !important;
+  font-size: 14.5px !important;
+  padding: 13px 20px !important;
+  border-bottom: 1px solid rgba(10, 47, 108, 0.07) !important;
+  transition: all 0.18s ease !important;
+  background: transparent !important;
+  position: relative;
+  border-left: 3px solid transparent !important;
+  width: 100% !important;
+  text-align: left !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+.offcanvas .dropdown-toggle:hover {
+  background: linear-gradient(90deg, rgba(10,47,108,0.04), rgba(42,157,143,0.04)) !important;
+  border-left-color: #2A9D8F !important;
+  padding-left: 26px !important;
+}
+.offcanvas .dropdown-toggle::after {
+  flex-shrink: 0;
+  transition: transform 0.25s;
+  margin-left: auto !important;
+  color: #1A6B8C;
+}
+.offcanvas .dropdown-toggle[aria-expanded="true"]::after {
+  transform: rotate(180deg);
+}
+.offcanvas .dropdown-toggle[aria-expanded="true"] {
+  background: linear-gradient(90deg, rgba(10,47,108,0.06), rgba(42,157,143,0.06)) !important;
+  border-left-color: #0A2F6C !important;
+  color: #0A2F6C !important;
+}
+
+/* Drawer sub-menu */
+.offcanvas .dropdown-menu {
+  position: static !important;
+  transform: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: #f7faff !important;
+  padding: 4px 0 !important;
+  animation: none !important;
+  border-radius: 0 !important;
+  margin: 0 0 0 20px !important;
+  border-left: 3px solid rgba(42,157,143,0.25) !important;
+  width: auto !important;
+}
+.offcanvas .dropdown-menu::before { display: none !important; }
+
+.offcanvas .dropdown-item {
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  color: #1A6B8C !important;
+  padding: 10px 18px !important;
+  border-bottom: 1px solid rgba(10,47,108,0.04) !important;
+  transition: all 0.15s ease !important;
+  background: transparent !important;
+}
+.offcanvas .dropdown-item::before { display: none !important; }
+.offcanvas .dropdown-item:hover {
+  background: linear-gradient(135deg, #0A2F6C, #2A9D8F) !important;
+  color: #fff !important;
+  padding-left: 26px !important;
+  border-radius: 6px !important;
+  margin: 0 6px !important;
+}
+
+/* Mobile auth section */
+.offcanvas .border-top {
+  border-top: 2px solid rgba(10, 47, 108, 0.1) !important;
+  padding: 16px !important;
+  background: #f9fbff;
+}
+.offcanvas .user-info { margin-bottom: 12px; }
+.offcanvas .user-info .fw-semibold { font-size: 14px; font-weight: 700 !important; }
+.offcanvas .user-info small { font-size: 12px; }
+.offcanvas .auth-btn.w-100 {
+  justify-content: center !important;
+  width: 100% !important;
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+}
+.offcanvas .mb-2 { margin-bottom: 10px !important; }
+
+/* Mobile dropdown menu (inside offcanvas) */
+.mobile-dropdown-menu {
+  position: static !important;
+  transform: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: #f7faff !important;
+  padding: 4px 0 !important;
+  border-radius: 0 !important;
+  margin: 0 0 0 20px !important;
+  border-left: 3px solid rgba(42,157,143,0.25) !important;
+  width: auto !important;
+}
+.mobile-dropdown-menu::before { display: none !important; }
+
+/* ═══════════════════════════════════════════
+   MARQUEE
+═══════════════════════════════════════════ */
+.marquee-wrapper,
+.marquee-container {
+  background: linear-gradient(135deg, #0A2F6C, #2A9D8F) !important;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+═══════════════════════════════════════════ */
+@media (min-width: 1200px) {
+  .menu-container {
+    justify-content: space-between !important;
+  }
+  .menu-link,
+  .menu-dropdown .dropdown-toggle {
+    font-size: 15.5px !important;
+    padding: 13px 10px !important;
   }
 }
 
-/* 🔹 Mobile numbers style */
-.small-numbers a {
-  font-size: 13px;
-  line-height: 1.3;
+@media (max-width: 1199px) {
+  .menu-container {
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important; /* ✅ allow dropdown to show below */
+    gap: 2px !important;
+    scroll-behavior: smooth;
+  }
+  .menu-container::-webkit-scrollbar { height: 3px; }
+  .menu-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); }
+  .menu-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,255,255,0.5));
+    border-radius: 3px;
+  }
+  .menu-link,
+  .highlight-link,
+  .menu-dropdown .dropdown-toggle {
+    font-size: 14px !important;
+    padding: 10px 12px !important;
+    flex: 0 0 auto !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .menu-row { display: none !important; }
+  .main-navbar .container-fluid {
+    padding-left: 20px !important;
+    padding-right: 16px !important;
+  }
+  .topbar-logo { width: 160px !important; }
+  .navbar-toggler {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+  .auth-section { display: none !important; }
+}
+
+@media (max-width: 768px) {
+  .top-bar { padding: 5px 16px !important; justify-content: center !important; }
+  .topbar-link { font-size: 12px !important; }
+  .main-navbar { padding-top: 9px !important; padding-bottom: 9px !important; }
+  .main-navbar .container-fluid { padding-left: 14px !important; padding-right: 12px !important; }
+  .topbar-logo { width: 150px !important; }
+}
+
+@media (max-width: 576px) {
+  .top-bar { padding: 5px 12px !important; justify-content: center !important; }
+  .topbar-link { font-size: 11.5px !important; text-align: center !important; }
+  .main-navbar { padding-top: 8px !important; padding-bottom: 8px !important; }
+  .main-navbar .container-fluid { padding-left: 12px !important; padding-right: 10px !important; }
+  .topbar-logo { width: 140px !important; }
+  .offcanvas { width: 88vw !important; }
+  .offcanvas-header { padding: 14px 16px !important; }
+  .offcanvas .nav-link,
+  .offcanvas .dropdown-toggle { font-size: 14px !important; padding: 12px 16px !important; }
+  .offcanvas .dropdown-item { font-size: 13px !important; padding: 9px 16px !important; }
+  .offcanvas .border-top { padding: 14px 12px 16px !important; }
+}
+
+@media (max-width: 400px) {
+  .topbar-link { font-size: 10.5px !important; }
+  .topbar-logo { width: 120px !important; }
+  .offcanvas { width: 92vw !important; }
+  .navbar-toggler { padding: 5px 8px !important; }
+}
+
+/* ═══════════════════════════════════════════
+   STICKY (optional)
+═══════════════════════════════════════════ */
+.navbar-wrapper.sticky {
+  position: sticky;
+  top: 0;
+  box-shadow: 0 4px 20px rgba(10, 47, 108, 0.15);
+}
+
+/* ═══════════════════════════════════════════
+   ACCESSIBILITY
+═══════════════════════════════════════════ */
+.menu-link:focus-visible,
+.menu-dropdown .dropdown-toggle:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.8) !important;
+  outline-offset: -2px !important;
+}
+.auth-btn:focus-visible {
+  outline: 2px solid #2A9D8F !important;
+  outline-offset: 2px !important;
+}
+.offcanvas .nav-link:focus-visible,
+.offcanvas .dropdown-toggle:focus-visible,
+.offcanvas .dropdown-item:focus-visible {
+  outline: 2px solid #2A9D8F !important;
+  outline-offset: -2px !important;
+  border-radius: 4px !important;
 }
