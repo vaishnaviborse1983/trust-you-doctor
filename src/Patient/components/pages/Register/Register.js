@@ -1422,6 +1422,7 @@ const Register = () => {
                   <SpecialityAutosuggest
                     value={doctorData.Speciality}
                     onChange={(val) => setDoctorData(prev => ({ ...prev, Speciality: val }))}
+                    onSelect={(val) => setDoctorData(prev => ({ ...prev, Speciality: val }))}
                   />
                 </div>
                 <InputField label="Education" {...ip('Education', 'doctor', doctorData, setDoctorData)} />

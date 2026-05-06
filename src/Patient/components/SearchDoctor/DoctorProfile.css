@@ -1,62 +1,371 @@
-  .Test-category {
-    cursor: pointer;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    transition: background-color 0.3s;
-    color: black;
-    padding: 15px;
-    margin-right: '2vh';
-    
-  }
-  
-  .Test-category:hover {
-    background-color: #BCBCBC;
-  }
-  
-  .Test-category.Test-active {
-    /* background-color: #BCBCBC; */
-    background-color: #EEEEEE;
-    color: #BB2124;
-    /* border-radius: 5px; */
-    stroke: none;
-  }
-  .DoctorNavbar{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-    padding: 0;
+/* ═══════════════════════════════════════════════════════════
+   DoctorProfile.css — TrustYou Doctors · Dark Navy App Theme
+   Matches BookingModal.css + SearchDoctor.css tokens exactly
+   ═══════════════════════════════════════════════════════════ */
 
-  }
-  .DoctorNavbarmain{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 0;
-    margin-left: 0;
-    background-color: white;
-   
-  }
-  .Test-content {
-    /* margin-top: 20px;
-    padding: 20px; */
-    text-align: center;
-    padding-top: 0;
-    background-color: white;
-    border: none;
-    /* box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; */
-    /* border-radius: 10px; */
-    padding: '4vh';
-    padding-bottom: 4vh;
-   margin-top: 0;
-  }
-  @media (max-width: 767px) {
-    /* Media query for screens smaller than 768px (typical mobile phones) */
-    .p-img {
-        height: 100px; /* Set the height to 20% of the viewport height */
-    }
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
 
+:root {
+  --bg-deep:        #0a0f1e;
+  --bg-card:        #111827;
+  --bg-card2:       #1a2235;
+  --bg-input:       #1e2a3a;
+  --border:         #243048;
+  --border-light:   #2d3d55;
+  --accent:         #3b82f6;
+  --accent-hover:   #2563eb;
+  --accent-glow:    rgba(59,130,246,0.18);
+  --accent2:        #22d3ee;
+  --green:          #34d399;
+  --red:            #f87171;
+  --gold:           #fbbf24;
+  --text-primary:   #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted:     #64748b;
+  --radius-sm:      8px;
+  --radius-md:      12px;
+  --radius-lg:      16px;
+  --radius-xl:      20px;
+  --shadow-card:    0 4px 24px rgba(0,0,0,0.45);
+  --font:           'Nunito', sans-serif;
+  --safe-bottom:    env(safe-area-inset-bottom, 0px);
 }
-.main-profile{
-  overflow-x: hidden;
+
+/* ── Root ──────────────────────────────────────────────────── */
+.dp-root {
+  min-height: 100dvh;
+  background: var(--bg-deep);
+  font-family: var(--font);
+  color: var(--text-primary);
+  padding-bottom: calc(80px + var(--safe-bottom));
+}
+
+/* ── Loading screen ────────────────────────────────────────── */
+.dp-loading-screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--bg-deep);
+  color: var(--text-secondary);
+  font-family: var(--font);
+}
+.dp-spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border-light);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: dp-spin 0.8s linear infinite;
+}
+@keyframes dp-spin { to { transform: rotate(360deg); } }
+
+/* ── Hero Banner ───────────────────────────────────────────── */
+.dp-banner {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+.dp-banner-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dp-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10,15,30,0.3) 0%, rgba(10,15,30,0.9) 100%);
+}
+
+/* ── Profile Card ──────────────────────────────────────────── */
+.dp-profile-card {
+  margin: -48px 16px 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+  position: relative;
+  z-index: 2;
+}
+.dp-avatar-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: -48px;
+  margin-bottom: 12px;
+}
+.dp-avatar {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 20px rgba(59,130,246,0.4);
+  background: var(--bg-card2);
+}
+.dp-profile-info {
+  text-align: center;
+}
+.dp-doctor-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+.dp-speciality {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent2);
+  margin: 0 0 4px;
+}
+.dp-qual {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+}
+.dp-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.dp-badge {
+  background: var(--bg-input);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+}
+.dp-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  text-align: left;
+  white-space: pre-line;
+  margin: 0;
+}
+
+/* ── Section Cards ─────────────────────────────────────────── */
+.dp-section-card {
+  margin: 12px 16px 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+}
+.dp-section-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Clinic Details ────────────────────────────────────────── */
+.dp-clinic-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0 0 12px;
+}
+.dp-timing-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.dp-timing-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 140px;
+  background: var(--bg-card2);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+.dp-timing-icon { font-size: 20px; }
+.dp-timing-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.dp-timing-value {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+.dp-address {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Fees Table ────────────────────────────────────────────── */
+.dp-fees-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.dp-fees-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-input);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.dp-fees-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.dp-fees-row:nth-child(even) { background: rgba(255,255,255,0.02); }
+.dp-fee-amount {
+  color: var(--green);
+  font-weight: 700;
+  font-size: 14px;
+}
+.dp-fees-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* ── Category Tabs ─────────────────────────────────────────── */
+.dp-cat-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.dp-cat-tabs::-webkit-scrollbar { display: none; }
+.dp-cat-tab {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.dp-cat-tab.active {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+/* ── Document content ──────────────────────────────────────── */
+.dp-doc-content {
+  min-height: 120px;
+}
+.dp-carousel .carousel-item img,
+.dp-carousel .carousel-item embed {
+  border-radius: var(--radius-md);
+}
+.dp-carousel .carousel-control-prev-icon,
+.dp-carousel .carousel-control-next-icon {
+  filter: invert(0.6) sepia(1) saturate(3) hue-rotate(190deg);
+}
+.dp-no-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-style: italic;
+}
+.dp-clinic-photo {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: 1px solid var(--border-light);
+  transition: opacity 0.2s;
+}
+.dp-clinic-photo:active { opacity: 0.85; }
+.dp-desc-txt {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--bg-input);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+.dp-desc-txt p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: pre-line;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Sticky CTA ────────────────────────────────────────────── */
+.dp-sticky-cta {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  padding: 12px 16px calc(12px + var(--safe-bottom));
+  background: linear-gradient(to top, rgba(10,15,30,0.98) 60%, transparent);
+  z-index: 100;
+}
+.dp-book-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 800;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  box-shadow: 0 4px 20px var(--accent-glow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  letter-spacing: 0.3px;
+}
+.dp-book-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 10px var(--accent-glow);
+}
+
+/* ── Responsive — tablets+ ─────────────────────────────────── */
+@media (min-width: 600px) {
+  .dp-banner          { height: 260px; }
+  .dp-profile-card,
+  .dp-section-card    { margin-left: auto; margin-right: auto; max-width: 560px; }
+  .dp-sticky-cta      { max-width: 560px; left: 50%; transform: translateX(-50%); right: auto; width: 100%; }
+  .dp-avatar          { width: 110px; height: 110px; }
+  .dp-doctor-name     { font-size: 22px; }
 }

@@ -1,12 +1,6 @@
-// 
-
 import './App.css';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
 import Home from './Patient/components/pages/Home'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,13 +8,17 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import LoginFormUser from './Patient/components/pages/Login/LoginFormUser';
 import Register from './Patient/components/pages/Register/Register';
 
+import MobileRegister      from './Patient/components/pages/Register/MobileRegister';
+import MobileForgotPassword from './Patient/components/pages/Login/MobileForgotPassword';
+
 import DrLogin from './Doctor/Login/DrLogin';
 
 import HospitalLogin from './Hospital/Login/HospitalLogin';
 import HospitalReg from './Hospital/Register/HospitalReg';
 import About from './About/About';
 import Contact from './Contact/Contact';
-import Login from './Patient/components/pages/Login';
+import Login from './Patient/components/pages/Login/LoginIndex';
+import MobileLoginForm from './Patient/components/pages/Login/MobileLoginForm';
 
 import SideNav from './Doctor/DashboardDr/SideNav';
 import Payment from './Doctor/DashboardDr/dashpages/Payment';
@@ -98,6 +96,14 @@ import PhysiotherapyAustralia from './Careers/physiotheraphy/PhysiotherapyAustra
 import TreatmentIndia from './Careers/TreatmentIndia.jsx';
 import PatientDocumentUpload from './Patient/components/pages/Patientdocumentupload .jsx';
 
+const isMobileEnv = () => {
+  if (typeof window === "undefined") return false;
+  const isCap = window.Capacitor?.isNativePlatform?.();
+  return isCap || window.innerWidth <= 768;
+};
+ 
+const MobileAwareRegister = () =>
+  isMobileEnv() ? <MobileRegister /> : <Register />;
 
 function App() {
   return (
@@ -118,7 +124,7 @@ function App() {
             </Route>
             {/* ✅ Unified Registration for all roles */}
             <Route path="/register">
-              <Register />
+              <MobileAwareRegister />
             </Route>
             <Route path="/patient-register">
               <Register />
@@ -140,6 +146,24 @@ function App() {
             </Route>
             <Route path='/DoctorFeatures'>
               <FeaturesDr />
+            </Route>
+
+            <Route path="/mobile-register">
+              <MobileRegister />
+            </Route>
+            
+            <Route path="/mobile-forgot-password">
+              <MobileForgotPassword />
+            </Route>
+
+            <Route path="/mobile-patient-login">
+              <MobileLoginForm role="patient" />
+            </Route>
+            <Route path="/mobile-doctor-login">
+              <MobileLoginForm role="doctor" />
+            </Route>
+            <Route path="/mobile-hospital-login">
+              <MobileLoginForm role="hospital" />
             </Route>
 
             {/* Career Routes */}
@@ -296,7 +320,7 @@ function App() {
 
             {/* Patient Forgot Password */}
             <Route path='/ForgotPasswordPatient'>
-              <ForgotPasswordPatient />
+              { isMobileEnv() ? <MobileForgotPassword /> : <ForgotPasswordPatient /> }
             </Route>
             <Route path='/otp-verificationPatient/:mobile'>
               <OtpVerificationPatient />

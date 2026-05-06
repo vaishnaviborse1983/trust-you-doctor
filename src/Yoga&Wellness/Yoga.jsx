@@ -1,6 +1,5 @@
 import React from 'react';
 import img7 from './img7.jpg';
-import img2 from './Ayurveda.jpg'
 import img3 from './Yoga Classes.jpg'
 import img4 from './Yoga Photo 2.jpg'
 import Navbar from '../Patient/components/pages/Navbar';
@@ -17,7 +16,7 @@ const Yoga = () => {
                 <Carousel style={{ margin: '3vh', padding: '2vh', marginBottom: '5vh' }}>
                     <Carousel.Item interval={2000}>
 
-                        <img src={img7} alt='Yoga Image' />
+                        <img src={img7} alt='Yoga' />
 
                     </Carousel.Item>
                     {/* <Carousel.Item interval={2000}>
@@ -27,12 +26,12 @@ const Yoga = () => {
                     </Carousel.Item> */}
                     <Carousel.Item interval={2000}>
 
-                        <img src={img3} alt='Yoga Image' />
+                        <img src={img3} alt='Yoga' />
 
                     </Carousel.Item>
                     <Carousel.Item interval={2000}>
 
-                        <img src={img4} alt='Yoga Image' />
+                        <img src={img4} alt='Yoga' />
 
                     </Carousel.Item>
                 </Carousel>

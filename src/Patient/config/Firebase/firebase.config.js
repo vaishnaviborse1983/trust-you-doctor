@@ -24,6 +24,9 @@ const storage = getStorage(app);
 const database = getDatabase(app);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
+if (window.location.hostname !== "localhost") {
+  getAnalytics(app);
+}
 
 const putData = (key, data) => set(ref(database, key), data);
 onValue(ref(database, 'Achievement'), (snapshot) =>

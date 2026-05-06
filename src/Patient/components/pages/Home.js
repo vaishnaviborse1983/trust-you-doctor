@@ -3,38 +3,42 @@ import Navbar from '../pages/Navbar';
 import MainSlide from './MainSlide';
 import Steps from './Steps';
 import Features from './Features';
-import Download from './Download';
 import Fotter from '../../../Footer/Footer';
-import { useEffect } from 'react';
+import MobileLanding from '../../../components/Home/MobileLanding';
+import MobileHome from '../../../components/Home/MobileHome';
+import useMobileLanding from '../../../hooks/useMobileLanding';
+
+// Detect Capacitor native OR narrow viewport (same logic as useMobileLanding)
+const isMobileEnv = () => {
+  if (typeof window === "undefined") return false;
+  const isCapacitor =
+    window.Capacitor &&
+    window.Capacitor.isNativePlatform &&
+    window.Capacitor.isNativePlatform();
+  return isCapacitor || window.innerWidth <= 768;
+};
 
 const Home = ({ history }) => {
-  // useEffect(() => {
-  //   window.history.pushState(null, document.title, window.location.href);
+  const { showLanding, dismissLanding } = useMobileLanding();
+  const mobile = isMobileEnv();
 
-  //   window.addEventListener('popstate', function (event) {
-  //     window.history.pushState(null, document.title, window.location.href);
-  //   });
-  // }, [history]);
-  // const storedUserId = localStorage.getItem('userId');
+  // 1. Show mobile onboarding (first launch only)
+  if (showLanding) {
+    return <MobileLanding onDone={dismissLanding} />;
+  }
 
-  // useEffect(() => {
-  //   console.log("storage : " + storedUserId);
-  // }, [])
+  // 2. Show mobile home (Capacitor / narrow viewport)
+  if (mobile) {
+    return <MobileHome />;                                // ← NEW
+  }
 
+  // 3. Original desktop home — completely untouched
   return (
     <div>
       <Navbar style={{ zIndex: 1 }} />
       <MainSlide style={{ zIndex: 2 }} />
-      {/* <div style={{ margin: '5vh 0', zIndex: 3 }}></div> */}
-
       <Steps style={{ zIndex: 4 }} />
-      {/* <div style={{ margin: '10vh 0', zIndex: 5 }}></div> */}
-
       <Features style={{ zIndex: 12 }} />
-      {/* <div style={{ margin: '5vh 0', zIndex: 12 }}></div> */}
-
-
-
       <Fotter style={{ zIndex: 10 }} />
     </div>
   );

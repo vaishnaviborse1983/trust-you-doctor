@@ -371,7 +371,7 @@ export default function SpecialityAutosuggest({ value, onChange, onSelect, onSea
   const [focused, setFocused] = useState(false);
   const inputRef = useRef(null);
 
-  const query = value.trim().toLowerCase();
+  const query = (value || '').toString().trim().toLowerCase();
   const visibleChips = query.length > 0
     ? SPECIALITIES.filter((s) => s.name.toLowerCase().includes(query))
     : SPECIALITIES;
